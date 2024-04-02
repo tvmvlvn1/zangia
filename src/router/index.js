@@ -12,6 +12,7 @@ import {
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import NetInfo from '@react-native-community/netinfo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import HomeScreen from '../screens/Home';
 import LoginScreen from '../screens/Login';
 import ForgetScreen from '../screens/forget/Forget';
@@ -73,21 +74,47 @@ import Phone from '../screens/phone';
 import PhoneDetail from '../screens/phone/detail';
 import PhoneDownload from '../screens/phone/pick';
 import PhoneFilter from '../screens/phone/filter';
+import IntroScreen from '../screens/Intro'
 
 const RootStack = createStackNavigator();
-
 const AuthStack = createStackNavigator();
-const AuthStackScreen = () => (
-  <AuthStack.Navigator
-    initialRouteName="Login"
-    screenOptions={{headerShown: false}}>
-    <AuthStack.Screen name="Login" component={LoginScreen} />
-    <AuthStack.Screen name="Forget" component={ForgetScreen} />
-    <AuthStack.Screen name="RecoverPass" component={RecoverPass} />
-    <AuthStack.Screen name="CheckCode" component={CheckCode} />
-    <AuthStack.Screen name="NewPass" component={NewPass} />
-  </AuthStack.Navigator>
-);
+const AuthStackScreen = () => {
+  const [intro, setIntro] = useState(null);
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    fetchIntro();
+  }, []);
+
+  const fetchIntro = async () => {
+    try {
+      setIsLoading(true)
+      const introValue = await AsyncStorage.getItem('intro');
+      setIntro(JSON.parse(introValue));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false)
+    }
+  };
+
+  return (
+    <>
+      {!isLoading &&
+        <AuthStack.Navigator
+          initialRouteName={intro ? 'Login' : 'Intro'}
+          screenOptions={{ headerShown: false }}>
+          <AuthStack.Screen name="Intro" component={IntroScreen} />
+          <AuthStack.Screen name="Login" component={LoginScreen} />
+          <AuthStack.Screen name="Forget" component={ForgetScreen} />
+          <AuthStack.Screen name="RecoverPass" component={RecoverPass} />
+          <AuthStack.Screen name="CheckCode" component={CheckCode} />
+          <AuthStack.Screen name="NewPass" component={NewPass} />
+        </AuthStack.Navigator>
+      }
+    </>
+  );
+};
 
 const InternetStack = createStackNavigator();
 const InternetStackScreen = () => (

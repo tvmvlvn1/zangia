@@ -1,26 +1,27 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
-  Image,
-  Alert,
   TouchableOpacity,
   Platform,
   SafeAreaView,
-  ActivityIndicator,
   Text,
   View,
-  ScrollView,
-  StyleSheet,
+  Image,
 } from 'react-native';
-import {Colors} from '../components/global/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {TextInput} from 'react-native-paper';
 import localApi from '../api/localApi';
-import {getUniqueId, getVersion, getModel} from 'react-native-device-info';
+import {getUniqueId, getModel} from 'react-native-device-info';
 import VersionCheck from 'react-native-version-check';
 import {AuthContext} from '../context/AuthContext';
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+import { ALERT_TYPE, Dialog, Toast } from 'react-native-alert-notification';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
+import AntDesignIcons from "react-native-vector-icons/AntDesign"
+import FeatherIcons from "react-native-vector-icons/Feather"
+import { Fumi  } from 'react-native-textinput-effects';
+import LinearGradient from 'react-native-linear-gradient';
+import Lottie from 'lottie-react-native'
 
-const LoginScreen = props => {
+const LoginScreen = (props) => {
   const {navigation} = props;
   const {login} = useContext(AuthContext);
   const [username, setUsername] = useState('');
@@ -41,6 +42,18 @@ const LoginScreen = props => {
     };
   }, []);
 
+  const getGreeting = () => {
+    const currentHour = new Date().getHours();
+
+    if (currentHour < 12) {
+        return 'Өглөөний мэнд,';
+    } else if (currentHour >= 12 && currentHour < 17) {
+        return 'Өдрийн мэнд,';
+    } else {
+        return 'Үдшийн мэнд,';
+    }
+};
+
   const fetchData = async () => {
     let loginData = await AsyncStorage.getItem('loginInfo');
     let loginUserData = await JSON.parse(loginData);
@@ -52,11 +65,30 @@ const LoginScreen = props => {
   };
 
   const signIn = async () => {
-    if (!username != '' || !password != '') {
-      Alert.alert('', 'Нэвтрэх код, нууц үгээ оруулна уу');
+    if(!username != '' && !password != '') {
+        Toast.show({
+            type: ALERT_TYPE.WARNING,
+            title: 'Алдаа гарлаа !!!',
+            textBody: 'Та хурууны код, нууц үгээ оруулдгаа мартчихсан юм биш биз ?',
+            textBodyStyle: { fontFamily: "Montserrat-Bold" }
+        })
+    } else if (!username != '') {
+        Toast.show({
+            type: ALERT_TYPE.WARNING,
+            title: 'Алдаа гарлаа !!!',
+            textBody: 'Та хурууны кодоо бичихээ мартчихсан юм биш биз ?',
+            textBodyStyle: { fontFamily: "Montserrat-Bold" }
+        })
+    } else if(!password != '') {
+        Toast.show({
+            type: ALERT_TYPE.WARNING,
+            title: 'Алдаа гарлаа !!!',
+            textBody: 'Та нууц үгээ бичихээ мартчихсан юм биш биз ?',
+            textBodyStyle: { fontFamily: "Montserrat-Bold" }
+        })
     } else {
       setIsLoading(true);
-
+      
       localApi
         .post('auth', {
           username,
@@ -72,10 +104,13 @@ const LoginScreen = props => {
                 if (uniqueId == res.data.imei) {
                   loginAuthenticated(res.data);
                 } else {
-                  Alert.alert(
-                    'Алдааны мэдээлэл',
-                    'Та энэ утаснаас нэвтрэх эрхгүй байна. Өөр утсаар нэвтрэх хүсэлтэй байгаа бол Erp-аар хүсэлтээ илгээнэ үү!',
-                  );
+                    Dialog.show({
+                        type: ALERT_TYPE.DANGER,
+                        title: 'Алдааны мэдээлэл',
+                        textBody: 'Та энэ утаснаас нэвтрэх эрхгүй байна. Өөр утсаар нэвтрэх хүсэлтэй байгаа бол Erp-аар хүсэлтээ илгээнэ үү !',
+                        button: 'Хаах',
+                        textBodyStyle: { fontFamily: "Montserrat-Bold" }
+                    })
                 }
               } else {
                 showAlert(getModel(), res.data);
@@ -83,58 +118,67 @@ const LoginScreen = props => {
             } else if (res.data.imei_check == 'UNCHECK') {
               loginAuthenticated(res.data);
             } else {
-              Alert.alert('Та нэвтрэх тохиргоо хийгдээгүй байна!');
+                Dialog.show({
+                    type: ALERT_TYPE.DANGER,
+                    title: 'Алдааны мэдээлэл',
+                    textBody: 'Та нэвтрэх тохиргоо хийгдээгүй байна !',
+                    button: 'Хаах',
+                    textBodyStyle: { fontFamily: "Montserrat-Bold" }
+                })
             }
           } else if (res.data.code == '401') {
             setIsLoading(false);
-            Alert.alert('Алдаа гарлаа!', res.data.message);
+            Dialog.show({
+                type: ALERT_TYPE.DANGER,
+                title: 'Алдааны мэдээлэл',
+                textBody: `${res.data.message}`,
+                button: 'Хаах',
+                textBodyStyle: { fontFamily: "Montserrat-Bold" }
+            })
           } else {
             setIsLoading(false);
-            Alert.alert(
-              'Алдаа гарлаа.',
-              'Нэвтрэх нэр эсвэл нууц үг буруу байна',
-            );
+            Dialog.show({
+                type: ALERT_TYPE.DANGER,
+                title: 'Алдааны мэдээлэл',
+                textBody: 'Нэвтрэх нэр эсвэл нууц үг буруу байна !',
+                button: 'Хаах',
+                textBodyStyle: { fontFamily: "Montserrat-Bold" }
+            })
           }
         })
         .catch(error => {
-          Alert.alert('Алдаа гарлаа', error.message);
+            Dialog.show({
+                type: ALERT_TYPE.DANGER,
+                title: 'Алдааны мэдээлэл',
+                textBody: `${error.message}`,
+                button: 'Хаах',
+                textBodyStyle: { fontFamily: "Montserrat-Bold" }
+            })
           setIsLoading(false);
         });
     }
   };
 
   const showAlert = (model, responseData) => {
-    return Alert.alert(
-      'Нэвтрэлт',
-      'Цаашид ' + model + ' төхөөрөмжөөр нэвтрэх үү',
-      [
-        {
-          text: '[Үгүй]',
-          onPress: () =>
-            Alert.alert('Өөрийн бүртгэлтэй төхөөрөмжөөс нэвтэрнэ үү.'),
-          style: 'cancel',
-        },
-        {
-          text: '[Тийм]',
-          onPress: () => showLoginAlert(responseData, true, model),
-        },
-      ],
-      {cancelable: false},
-    );
+    return Dialog.show({
+        type: ALERT_TYPE.SUCCESS,
+        title: 'Нэвтрэх тохиргоо',
+        textBody: `Цаашид ${model} төхөөрөмжөөр нэвтрэх үү ?`,
+        button: 'Тийм',
+        onPressButton: () => showLoginAlert(responseData, true, model),
+        textBodyStyle: { fontFamily: "Montserrat-Bold" }
+    })
   };
 
   const showLoginAlert = (responseData, isLogin, model) => {
-    return Alert.alert(
-      'Нэвтрэлт',
-      'Цаашид ' + model + ' төхөөрөмжөөр нэвтрэхийг зөвшөөрч байна.',
-      [
-        {
-          text: '[Зөвшөөрч байна]',
-          onPress: () => loginAuthenticated(responseData, isLogin),
-        },
-      ],
-      {cancelable: false},
-    );
+    return Dialog.show({
+        type: ALERT_TYPE.SUCCESS,
+        title: 'Нэвтрэх тохиргоо',
+        textBody: `Цаашид ${model} төхөөрөмжөөр нэвтрэхийг зөвшөөрч байна.`,
+        button: 'Зөвшөөрөх',
+        onPressButton: () => loginAuthenticated(responseData, isLogin),
+        textBodyStyle: { fontFamily: "Montserrat-Bold" }
+    })
   };
 
   const setImeiCode = responseData => {
@@ -145,10 +189,20 @@ const LoginScreen = props => {
         jwt: responseData.jwt,
       })
       .then(res => {
-        Alert.alert('', res.data.message);
+        Toast.show({
+            type: ALERT_TYPE.WARNING,
+            title: 'Мэдэгдэл',
+            textBody: `${res.data.message}`,
+            textBodyStyle: { fontFamily: "Montserrat-Bold" }
+        })
       })
       .catch(err => {
-        Alert.alert('Алдаа гарлаа', err.message);
+        Toast.show({
+            type: ALERT_TYPE.WARNING,
+            title: 'Алдаа гарлаа !!!',
+            textBody: `${err.message}`,
+            textBodyStyle: { fontFamily: "Montserrat-Bold" }
+        })
       });
   };
 
@@ -170,196 +224,109 @@ const LoginScreen = props => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView
-        contentContainerStyle={{flexGrow: 1}}
-        keyboardShouldPersistTaps="handled">
-        <View style={{flexGrow: 1, justifyContent: 'center'}}>
-          <View style={styles.Loginbox1}>
-            <Image
-              resizeMode="cover"
-              style={styles.loginShape}
-              source={require('../assets/login/loginBG.png')}
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+        {isLoading ? 
+            <Lottie
+                autoPlay
+                loop
+                style={{ flex: 1, justifyContent: 'center' }}
+                source={require('../assets/lottie/loading.json')}
             />
-            <Image
-              resizeMode="contain"
-              style={styles.loginLogo}
-              source={require('../assets/login/loginLogo.png')}
-            />
-            <Text style={styles.loginText}>АЖИЛТНЫ АПП</Text>
-          </View>
-          <View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                label="Нэвтрэх нэр"
-                value={username}
-                keyboardType="numeric"
-                onChangeText={text => setUsername(text)}
-                mode="outlined"
-                style={styles.input}
-                textColor={Colors.text}
-                outlineStyle={{borderColor: Colors.primary}}
-                theme={{
-                  colors: {
-                    primary: Colors.primary,
-                  },
-                }}
-                left={<TextInput.Icon icon="account-outline" color={'#000'} />}
-              />
-            </View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                label="Нууц үг"
-                value={password}
-                onChangeText={text => setPassword(text)}
-                mode="outlined"
-                style={styles.input}
-                textColor={Colors.text}
-                outlineStyle={{borderColor: Colors.primary}}
-                // secureTextEntry={!showPassword ? true : false}
-                secureTextEntry={true}
-                theme={{
-                  colors: {
-                    primary: Colors.primary,
-                  },
-                }}
-                left={<TextInput.Icon icon="lock-outline" color={'#000'} />}
-              />
-            </View>
-            <TouchableOpacity
-              style={styles.forgotTextContainer}
-              onPress={() => {
-                navigation.navigate('Forget');
-              }}>
-              <Text style={{color: '#333'}}>Та нууц үгээ мартсан уу?</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setSaveLoginInfo(!saveLoginInfo)}
-              style={styles.checkboxContainer}>
-              {!saveLoginInfo ? (
-                <View style={styles.checkbox}></View>
-              ) : (
-                <View style={styles.checkboxCheckedContainer}>
-                  <View style={styles.checkboxChecked} />
+        :
+            <View style={{ flex: 1, justifyContent: "space-between", marginBottom: 20 }}>
+                <View>
+                    <View style={{ alignItems: "center", marginTop: "5%" }}>
+                        <Text style={{ fontFamily: "Montserrat-Medium", fontSize: 18, color: "#000" }}>
+                            {getGreeting()}
+                        </Text>
+                        <Text style={{ fontFamily: "Montserrat-Bold", fontSize: 22, color: "#000" }}>
+                            Тавтай морилно уу
+                        </Text>
+                    </View>
+                    <View style={{ margin: 20 }}>
+                        <Fumi
+                            placeholder='Хурууны код'
+                            iconClass={FontAwesomeIcon}
+                            iconName={'user-o'}
+                            iconColor={'#97B6FE'}
+                            iconSize={20}
+                            iconWidth={40}
+                            inputPadding={16}
+                            value={username}
+                            onChangeText={(text) => setUsername(text)}
+                            inputStyle={{ fontFamily: "Montserrat-Medium", color: "#000", marginBottom: 13, fontSize: 15 }}
+                            style={{ backgroundColor: "#F7F8F8", borderRadius: 14, fontFamily: "Montserrat-Medium" }}
+                        />
+                        <Fumi
+                            placeholder='Нууц үг'
+                            iconClass={SimpleLineIcons}
+                            iconName={'lock'}
+                            iconColor={'#97B6FE'}
+                            iconSize={20}
+                            iconWidth={40}
+                            inputPadding={16}
+                            secureTextEntry={true}
+                            value={password}
+                            onChangeText={(text) => setPassword(text)}
+                            inputStyle={{ fontFamily: "Montserrat-Medium", color: "#000", marginBottom: 13, fontSize: 15 }}
+                            style={{ backgroundColor: "#F7F8F8", borderRadius: 14, fontFamily: "Montserrat-Medium", marginTop: 10 }}
+                        />
+                    </View>
+                    <View style={{ alignItems: "flex-end", marginRight: 5 }}>
+                        <TouchableOpacity>
+                            <Text style={{ fontFamily: "Montserrat-SemiBold", fontSize: 14, color: "#ADA4A5" }} onPress={() => { navigation.navigate('Forget') }}>
+                                Нууц үгээ мартсан уу ?
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-              )}
-              <Text style={{marginLeft: 5, color: '#000'}}>Сануулах</Text>
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity
-            style={[styles.button, {flexDirection: 'row'}]}
-            disabled={isLoading ? true : false}
-            onPress={() => signIn()}>
-            {isLoading && (
-              <ActivityIndicator
-                color="white"
-                size="small"
-                style={{marginRight: 5}}
-              />
-            )}
-            <Text style={styles.buttonText}>Нэвтрэх</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              Alert.alert('', uniqueId);
-            }}
-            style={styles.versionContainer}>
-            <Text style={{color: Colors.text}}>v.{getVersion()}</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+
+                <View style={{ paddingLeft: 20, paddingRight: 20 }}>
+                    <TouchableOpacity style={{ backgroundColor: "#fff", borderRadius: 99, alignItems: "center" }} onPress={() => signIn()}>
+                        <LinearGradient
+                            colors={[ '#92A3FD', '#9DCEFF' ]}
+                            style={{ width: "100%", padding: 20, borderRadius: 99, alignItems: "center", flexDirection: "row", justifyContent: "center" }}
+                        >   
+                            <AntDesignIcons
+                                name='login'
+                                color={"#fff"}
+                                size={20}
+                                style={{ marginRight: 5 }}
+                            />
+                            <Text style={{ fontFamily: "Montserrat-Bold", color: '#fff', textTransform: "uppercase" }}>
+                                Нэвтрэх
+                            </Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
+
+                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 5 }}>
+                        <View style={{ height: 1, backgroundColor: "#DDDADA", width: "45%" }}/>
+                        <Image
+                            source={require("../assets/images/loginArrow.png")}
+                            style={{ width: 40, height: 40 }}
+                            resizeMode='contain'
+                        />
+                        <View style={{ height: 1, backgroundColor: "#DDDADA", width: "45%" }}/>
+                    </View>
+
+                    <TouchableOpacity onPress={() => setSaveLoginInfo(!saveLoginInfo)}>
+                        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 5 }}>
+                            <FeatherIcons
+                                name='check-circle'
+                                color={saveLoginInfo ? "#000" : "#ADA4A5"}
+                                size={20}
+                                style={{ marginRight: 5 }}
+                            />
+                            <Text style={{ fontFamily: "Montserrat-Medium", color: saveLoginInfo ? "#000" : '#ADA4A5' }}>
+                                {saveLoginInfo ? "Нэвтрэх нэр үгийг нь хадгалчихсан шүү" : "Нэвтрэх нэр үгээ сануулах уу ?"}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        }
     </SafeAreaView>
   );
 };
 
 export default LoginScreen;
-
-const styles = StyleSheet.create({
-  button: {
-    backgroundColor: Colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 50,
-    marginHorizontal: 10,
-    borderRadius: 8,
-    marginTop: 10,
-  },
-  buttonText: {color: '#fff'},
-  checkboxContainer: {
-    flexDirection: 'row',
-    marginHorizontal: 10,
-    width: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 10,
-  },
-  checkbox: {
-    borderWidth: 1,
-    borderColor: Colors.primary,
-    borderRadius: 180,
-    width: 16,
-    height: 16,
-  },
-  checkboxChecked: {
-    width: 9,
-    height: 9,
-    backgroundColor: Colors.primary,
-    borderRadius: 300,
-  },
-  checkboxCheckedContainer: {
-    borderWidth: 1,
-    borderColor: Colors.primary,
-    width: 16,
-    height: 16,
-    borderRadius: 180,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  container: {flex: 1, backgroundColor: '#fff'},
-  forgotTextContainer: {
-    marginVertical: 5,
-    paddingHorizontal: 10,
-    width: 200,
-    alignSelf: 'flex-end',
-  },
-  inputContainer: {
-    justifyContent: 'center',
-    paddingHorizontal: 10,
-    height: 50,
-    marginTop: 10,
-  },
-  input: {flex: 1, backgroundColor: '#fff', color: '#000'},
-  logo: {height: 80, alignSelf: 'center'},
-  versionContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 0.1,
-    marginBottom: 20,
-    width: '20%',
-    alignSelf: 'center',
-  },
-  Loginbox1: {
-    height: '50%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: '-30%',
-  },
-  loginShape: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    top: '-10%',
-  },
-  loginLogo: {
-    width: '20%',
-    height: '20%',
-    position: 'absolute',
-    top: '10%',
-  },
-  loginText: {
-    position: 'absolute',
-    top: '33%',
-    color: '#fff',
-    fontSize: 18,
-  },
-});
