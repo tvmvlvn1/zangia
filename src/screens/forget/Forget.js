@@ -1,18 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import {
-  ActivityIndicator,
   View,
   Text,
-  Linking,
   Alert,
-  SafeAreaView,
-  ScrollView,
   TouchableOpacity,
+  ImageBackground,
 } from 'react-native';
-import {TextInput} from 'react-native-paper';
-import {Colors} from '../../components/global/Colors';
+import { Fumi  } from 'react-native-textinput-effects';
+import Back from 'react-native-vector-icons/AntDesign';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import localApi from '../../api/localApi';
-import styles from './style';
+import Lottie from 'lottie-react-native'
+import LinearGradient from 'react-native-linear-gradient';
+import { ALERT_TYPE, Dialog, Toast } from 'react-native-alert-notification';
 
 const ForgetScreen = props => {
   const [username, setUsername] = useState('');
@@ -20,75 +20,123 @@ const ForgetScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
 
   const searchFingerCode = () => {
-    setIsLoading(true);
-    localApi
-      .post('searchFingerCode', {
-        authentication: '!@#$%^*()Qwerty123456789QAXRTYU',
-        fingercode: username,
-      })
-      .then(res => {
-        if (res.data.code == 200 && res.data.is_emp) {
-          navigation.navigate('RecoverPass', {items: res.data.items});
-        } else {
-          Alert.alert('Алдаа', 'Та бүртгэлгүй байна');
-        }
-        setIsLoading(false);
-      })
-      .catch(err => {
-        setIsLoading(false);
-        console.log(err.message);
-        Alert.alert('Алдаа гарлаа.', err.message);
+    if (username === "") {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: 'Алдаа гарлаа !!!',
+        textBody: 'Та хурууны кодоо оруулдгаа мартчихсан юм биш биз ?',
+        textBodyStyle: { fontFamily: "Montserrat-Bold" }
       });
-  };
+    } else {
+      setIsLoading(true);
+
+      localApi
+        .post('searchFingerCode', {
+          authentication: '!@#$%^*()Qwerty123456789QAXRTYU',
+          fingercode: username,
+        })
+        .then(res => {
+          if (res.data.code === "200" && res.data.is_emp) {
+            navigation.navigate('RecoverPass', { items: res.data.items });
+          } else {
+            Dialog.show({
+              type: ALERT_TYPE.DANGER,
+              title: 'Алдааны мэдээлэл',
+              textBody: 'Та бүртгэлгүй байна !!!',
+              button: 'Хаах',
+              textBodyStyle: { fontFamily: "Montserrat-Bold" }
+            });
+          }
+        })
+        .catch(err => {
+          Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: 'Алдааны мэдээлэл',
+            textBody: `${err.message}`,
+            button: 'Хаах',
+            textBodyStyle: { fontFamily: "Montserrat-Bold" }
+          });
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  };  
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.container}
-      keyboardDismissMode={'on-drag'}>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.boxContainer}>
-          <Text style={styles.title}>Бүртгэл хайх</Text>
-
-          <View style={styles.inputContainer}>
-            <TextInput
-              label="Нэвтрэх нэр"
-              value={username}
-              keyboardType="numeric"
-              onChangeText={text => setUsername(text)}
-              mode="outlined"
-              style={styles.input}
-              outlineStyle={{borderColor: Colors.primary}}
-              theme={{
-                colors: {
-                  primary: Colors.primary,
-                },
-              }}
-              left={<TextInput.Icon icon="account-outline" />}
-            />
+    <View style={{flex: 1, backgroundColor: '#fff'}}>
+      {
+        isLoading ? 
+          <Lottie
+            autoPlay
+            loop
+            style={{ flex: 1, justifyContent: 'center' }}
+            source={require('../../assets/lottie/loading.json')}
+          />
+        :
+        <ImageBackground
+          source={require("../../assets/images/forget.jpg")}
+          style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '35%',
+            }}
+            resizeMode="cover"
+        >
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              top: Platform.OS === 'ios' ? 50 : 15,
+              left: 15,
+              backgroundColor: '#F9F9F9',
+              padding: 10,
+              borderRadius: 20,
+              alignItems: 'center',
+            }}
+            onPress={() => navigation.goBack()}>
+            <Back name="arrowleft" size={16} color="#737373" />
+          </TouchableOpacity>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: '#fff',
+              width: '100%',
+              height: '70%',
+              bottom: 0,
+              position: 'absolute',
+              borderTopRightRadius: 40,
+            }}
+          >
+            <View style={{ padding: 20, justifyContent: "space-between", flex: 1 }}>
+              <Fumi
+                placeholder='Хурууны код'
+                iconClass={FontAwesomeIcon}
+                iconName={'user-o'}
+                iconColor={'#97B6FE'}
+                iconSize={20}
+                iconWidth={40}
+                inputPadding={16}
+                value={username}
+                onChangeText={(text) => setUsername(text)}
+                inputStyle={{ fontFamily: "Montserrat-Medium", color: "#000", marginBottom: 13, fontSize: 15 }}
+                style={{ backgroundColor: "#F7F8F8", borderRadius: 14, fontFamily: "Montserrat-Medium" }}
+              />
+              <TouchableOpacity style={{ backgroundColor: "#fff", borderRadius: 99, alignItems: "center" }} onPress={() => searchFingerCode()}>
+                <LinearGradient
+                  colors={[ '#92A3FD', '#9DCEFF' ]}
+                  style={{ width: "100%", padding: 20, borderRadius: 99, alignItems: "center", flexDirection: "row", justifyContent: "center" }}
+                >  
+                  <Text style={{ fontFamily: "Montserrat-Bold", color: '#fff', textTransform: "uppercase" }}>
+                    Хайх
+                  </Text>
+              </LinearGradient>
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigation.goBack()}>
-              <Text style={styles.buttonText}>Буцах</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, {flexDirection: 'row'}]}
-              disabled={isLoading ? true : false}
-              onPress={() => searchFingerCode()}>
-              {isLoading && (
-                <ActivityIndicator
-                  color="white"
-                  size="small"
-                  style={{marginRight: 5}}
-                />
-              )}
-              <Text style={styles.buttonText}>Хайх</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </SafeAreaView>
-    </ScrollView>
+        </ImageBackground>
+      }
+    </View>
   );
 };
 export default ForgetScreen;

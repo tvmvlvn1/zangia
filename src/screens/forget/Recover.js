@@ -1,72 +1,29 @@
-import React, {Component, useState} from 'react';
+import React, { useState } from 'react';
 import {
-  Image,
-  Alert,
-  SafeAreaView,
   View,
   Text,
   TouchableOpacity,
-  ActivityIndicator,
-  ScrollView,
+  ImageBackground,
+  Platform
 } from 'react-native';
+import Back from 'react-native-vector-icons/AntDesign';
+import LinearGradient from 'react-native-linear-gradient';
+import FeatherIcons from "react-native-vector-icons/Feather"
+import { ALERT_TYPE, Dialog, Toast } from 'react-native-alert-notification';
+import Lottie from 'lottie-react-native'
+
 import localApi from '../../api/localApi';
-import styles from './style';
 
 const RecoverPass = props => {
   const {items} = props.route.params;
   const {navigation} = props;
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
-
-  const renderItems = () => {
-    const viewItems = items.map((item, i) =>
-      item.type == 0 ? (
-        <TouchableOpacity
-          key={i}
-          onPress={() => setSelectedItem(item)}
-          style={styles.checkboxContainer}>
-          {selectedItem != item ? (
-            <View style={styles.checkbox}></View>
-          ) : (
-            <View style={styles.checkboxCheckedContainer}>
-              <View style={styles.checkboxChecked} />
-            </View>
-          )}
-          <Text style={{marginLeft: 5, color: '#000'}}>
-            {item.name.substring(0, 3) +
-              '*****' +
-              item.name.substring(
-                item.name.indexOf('@') - 1,
-                item.name.indexOf('@'),
-              ) +
-              '@***'}
-          </Text>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          key={i}
-          onPress={() => setSelectedItem(item)}
-          style={styles.checkboxContainer}>
-          {selectedItem != item ? (
-            <View style={styles.checkbox}></View>
-          ) : (
-            <View style={styles.checkboxCheckedContainer}>
-              <View style={styles.checkboxChecked} />
-            </View>
-          )}
-          <Text style={{marginLeft: 5, color: '#000'}}>
-            +976 {item.name.substring(0, 3)}***
-            {item.name.slice(-2)}
-          </Text>
-        </TouchableOpacity>
-      ),
-    );
-    return viewItems;
-  };
+  const [selectedItem, setSelectedItem] = useState({})
 
   const sendCode = () => {
-    setIsLoading(true);
-    if (selectedItem) {
+    if (selectedItem !== {}) {
+      setIsLoading(true);
+
       localApi
         .post('sendCode', {
           name: selectedItem.name,
@@ -76,56 +33,142 @@ const RecoverPass = props => {
         })
         .then(res => {
           if (res.data.code == 200 && res.data.issent) {
-            setIsLoading(false);
             navigation.navigate('CheckCode', {selectedItem: selectedItem});
           } else {
-            Alert.alert('Алдаа гарлаа.', res.data.message);
+            Dialog.show({
+              type: ALERT_TYPE.DANGER,
+              title: 'Алдааны мэдээлэл',
+              textBody: `${res.data.message}`,
+              button: 'Хаах',
+              textBodyStyle: { fontFamily: "Montserrat-Bold" }
+            })
           }
         })
         .catch(err => {
+          Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: 'Алдааны мэдээлэл',
+            textBody: `${err.message}`,
+            button: 'Хаах',
+            textBodyStyle: { fontFamily: "Montserrat-Bold" }
+          })
+        }).finally(() => {
           setIsLoading(false);
-          Alert.alert('Алдаа гарлаа.', err.message);
-        });
+        })
     } else {
-      setIsLoading(false);
-      Alert.alert('Алдаа.', 'Та нууц үг хүлээн авах төрлөө сонгоно уу.');
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: 'Алдаа гарлаа !!!',
+        textBody: 'Та нууц үг хүлээн авах төрлөө сонгохгүй бол нууц үгээ шинэчлэж чадахгүй шүү !',
+        textBodyStyle: { fontFamily: "Montserrat-Bold" }
+      })
     }
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.container}
-      keyboardDismissMode={'on-drag'}>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.boxContainer}>
-          <Text style={styles.title}>Нууц үг сэргээх</Text>
-          <Text style={styles.infoText}>
-            Нууц үгээ шинэчлэх кодыг хэрхэн авах вэ?
-          </Text>
-          <View style={styles.optionsContainer}>{renderItems()}</View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigation.goBack()}>
-              <Text style={styles.buttonText}>Буцах</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, {flexDirection: 'row'}]}
-              disabled={isLoading ? true : false}
-              onPress={() => sendCode()}>
-              {isLoading && (
-                <ActivityIndicator
-                  color="white"
-                  size="small"
-                  style={{marginRight: 5}}
-                />
-              )}
-              <Text style={styles.buttonText}>Илгээх</Text>
-            </TouchableOpacity>
+    <View style={{flex: 1, backgroundColor: '#fff'}}>
+      {
+        isLoading ? 
+          <Lottie
+            autoPlay
+            loop
+            style={{ flex: 1, justifyContent: 'center' }}
+            source={require('../../assets/lottie/loading.json')}
+          />
+        :
+        <ImageBackground
+          source={require("../../assets/images/sendCode.jpg")}
+          style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '35%',
+            }}
+            resizeMode="cover"
+        >
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              top: Platform.OS === 'ios' ? 50 : 15,
+              left: 15,
+              backgroundColor: '#F9F9F9',
+              padding: 10,
+              borderRadius: 20,
+              alignItems: 'center',
+            }}
+            onPress={() => navigation.goBack()}>
+            <Back name="arrowleft" size={16} color="#737373" />
+          </TouchableOpacity>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: '#fff',
+              width: '100%',
+              height: '70%',
+              bottom: 0,
+              position: 'absolute',
+              borderTopLeftRadius: 40,
+            }}
+          >
+            <View style={{ padding: 20, justifyContent: "space-between", flex: 1 }}>
+              <View>
+                {items.map((item) => {
+                  return (
+                    <TouchableOpacity onPress={() => setSelectedItem(item)}>
+                      <View style={{margin: 7}}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            padding: 10,
+                            borderRadius: 10,
+                            alignItems: 'center',
+                          }}>
+                          <FeatherIcons
+                            name='check-circle'
+                            color={selectedItem === item ? '#000' : "#ADA4A5"}
+                            size={20}
+                            style={{ marginRight: 5 }}
+                          />
+                          <View>
+                            <Text
+                              style={{
+                                color: selectedItem === item ? '#000' : '#ADA4A5',
+                                fontFamily: 'Montserrat-Medium',
+                                textAlign: 'right',
+                              }}>
+                              {item.name}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+
+                      <View
+                        style={{
+                          height: 1,
+                          backgroundColor: selectedItem === item ? '#000' : '#e5e5e5',
+                        }}
+                      />
+                    </TouchableOpacity>
+                  )
+                })}
+              </View>
+
+              <TouchableOpacity style={{ backgroundColor: "#fff", borderRadius: 99, alignItems: "center" }} onPress={() => sendCode()}>
+                <LinearGradient
+                  colors={[ '#92A3FD', '#9DCEFF' ]}
+                  style={{ width: "100%", padding: 20, borderRadius: 99, alignItems: "center", flexDirection: "row", justifyContent: "center" }}
+                >  
+                  <Text style={{ fontFamily: "Montserrat-Bold", color: '#fff', textTransform: "uppercase" }}>
+                    Илгээх
+                  </Text>
+              </LinearGradient>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </SafeAreaView>
-    </ScrollView>
+        </ImageBackground>
+      }
+    </View>
   );
 };
 

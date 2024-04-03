@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     color: Colors.text,
     fontSize: 14,
     color: '#000',
+    fontFamily: "Montserrat-Medium"
   },
   icon: {
     marginRight: 6,

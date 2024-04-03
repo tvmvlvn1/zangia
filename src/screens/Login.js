@@ -312,10 +312,10 @@ const LoginScreen = (props) => {
                     <TouchableOpacity onPress={() => setSaveLoginInfo(!saveLoginInfo)}>
                         <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 5 }}>
                             <FeatherIcons
-                                name='check-circle'
-                                color={saveLoginInfo ? "#000" : "#ADA4A5"}
-                                size={20}
-                                style={{ marginRight: 5 }}
+                              name='check-circle'
+                              color={saveLoginInfo ? "#000" : "#ADA4A5"}
+                              size={20}
+                              style={{ marginRight: 5 }}
                             />
                             <Text style={{ fontFamily: "Montserrat-Medium", color: saveLoginInfo ? "#000" : '#ADA4A5' }}>
                                 {saveLoginInfo ? "Нэвтрэх нэр үгийг нь хадгалчихсан шүү" : "Нэвтрэх нэр үгээ сануулах уу ?"}
