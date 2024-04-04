@@ -65,6 +65,7 @@ const CheckCode = props => {
   };
 
   const checkCode = () => {
+    navigation.navigate('NewPass', {selectedItem: selectedItem});
     setIsLoading(true);
     localApi
       .post('checkSecurity', {

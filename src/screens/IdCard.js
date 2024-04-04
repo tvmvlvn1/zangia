@@ -38,7 +38,7 @@ const IdCardScreen = props => {
     );
   }
   return (
-    <View style={{flex: 1, alignSelf: 'center', justifyContent: 'center'}}>
+    <View style={{flex: 1, alignSelf: 'center', justifyContent: 'center', backgroundColor: "#fff", width: "100%", alignItems: "center" }}>
       <View
         style={{
           justifyContent: 'center',
@@ -46,7 +46,7 @@ const IdCardScreen = props => {
           width: 320,
           height: 507,
           position: 'relative',
-          backgroundColor: '#fff',
+          backgroundColor: '#fff'
         }}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
@@ -67,7 +67,7 @@ const IdCardScreen = props => {
         )}
         <Image
           resizeMode="contain"
-          style={{width: 320, height: '100%'}}
+          style={{ width: 320, height: '100%', borderRadius: 15 }}
           source={require('../assets/images/vnemleh.png')}
         />
         <Text style={styles.profileName}>
