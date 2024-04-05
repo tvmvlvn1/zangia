@@ -16,6 +16,7 @@ import { ALERT_TYPE, Dialog, Toast } from 'react-native-alert-notification';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import AntDesignIcons from "react-native-vector-icons/AntDesign"
+import IoniconsIcons from "react-native-vector-icons/Ionicons"
 import FeatherIcons from "react-native-vector-icons/Feather"
 import { Fumi  } from 'react-native-textinput-effects';
 import LinearGradient from 'react-native-linear-gradient';
@@ -29,6 +30,7 @@ const LoginScreen = (props) => {
   const [uniqueId, setUniqueId] = useState('');
   const [saveLoginInfo, setSaveLoginInfo] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isShow, setIsShow] = useState(false);
 
   useEffect(() => {
     getUniqueId().then(data => setUniqueId(data));
@@ -52,7 +54,7 @@ const LoginScreen = (props) => {
     } else {
         return 'Үдшийн мэнд,';
     }
-};
+  };
 
   const fetchData = async () => {
     let loginData = await AsyncStorage.getItem('loginInfo');
@@ -244,33 +246,43 @@ const LoginScreen = (props) => {
                         </Text>
                     </View>
                     <View style={{ margin: 20 }}>
+                      <Fumi
+                        placeholder='Хурууны код'
+                        iconClass={FontAwesomeIcon}
+                        iconName={'user-o'}
+                        iconColor={'#97B6FE'}
+                        iconSize={20}
+                        iconWidth={40}
+                        inputPadding={16}
+                        value={username}
+                        onChangeText={(text) => setUsername(text)}
+                        inputStyle={{ fontFamily: "Montserrat-Medium", color: "#000", marginBottom: 13, fontSize: 15 }}
+                        style={{ backgroundColor: "#F7F8F8", borderRadius: 14, fontFamily: "Montserrat-Medium" }}
+                      />
+                      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
                         <Fumi
-                            placeholder='Хурууны код'
-                            iconClass={FontAwesomeIcon}
-                            iconName={'user-o'}
-                            iconColor={'#97B6FE'}
-                            iconSize={20}
-                            iconWidth={40}
-                            inputPadding={16}
-                            value={username}
-                            onChangeText={(text) => setUsername(text)}
-                            inputStyle={{ fontFamily: "Montserrat-Medium", color: "#000", marginBottom: 13, fontSize: 15 }}
-                            style={{ backgroundColor: "#F7F8F8", borderRadius: 14, fontFamily: "Montserrat-Medium" }}
+                          placeholder='Нууц үг'
+                          iconClass={SimpleLineIcons}
+                          iconName={'lock'}
+                          iconColor={'#97B6FE'}
+                          iconSize={20}
+                          iconWidth={40}
+                          inputPadding={16}
+                          secureTextEntry={isShow ? false : true}
+                          value={password}
+                          onChangeText={(text) => setPassword(text)}
+                          inputStyle={{ fontFamily: "Montserrat-Medium", color: "#000", marginBottom: 13, fontSize: 15 }}
+                          style={{ backgroundColor: "#F7F8F8", borderRadius: 14, fontFamily: "Montserrat-Medium", marginTop: 10, width: "80%" }}
                         />
-                        <Fumi
-                            placeholder='Нууц үг'
-                            iconClass={SimpleLineIcons}
-                            iconName={'lock'}
-                            iconColor={'#97B6FE'}
-                            iconSize={20}
-                            iconWidth={40}
-                            inputPadding={16}
-                            secureTextEntry={true}
-                            value={password}
-                            onChangeText={(text) => setPassword(text)}
-                            inputStyle={{ fontFamily: "Montserrat-Medium", color: "#000", marginBottom: 13, fontSize: 15 }}
-                            style={{ backgroundColor: "#F7F8F8", borderRadius: 14, fontFamily: "Montserrat-Medium", marginTop: 10 }}
-                        />
+                        <TouchableOpacity style={{ backgroundColor: "#F7F8F8", padding: 20, marginTop: 10, borderRadius: 20 }} onPress={() => setIsShow(!isShow)}>
+                          <IoniconsIcons
+                            name={isShow ? "eye-outline" : 'eye-off-outline'}
+                            color={"#000"}
+                            size={20}
+                            style={{ marginRight: 5 }}
+                          />
+                        </TouchableOpacity>
+                      </View>
                     </View>
                     <View style={{ alignItems: "flex-end", marginRight: 5 }}>
                         <TouchableOpacity>
