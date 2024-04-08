@@ -5,12 +5,14 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
+  ScrollView,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import localApi from '../api/localApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import EvilIconsIcons from "react-native-vector-icons/EvilIcons"
-import Event from '../components/Event';
+import EvilIconsIcons from "react-native-vector-icons/EvilIcons";
+import LinearGradient from 'react-native-linear-gradient';
+import Carousel from '../components/carousel';
 
 const HomeScreen = props => {
   const {navigation} = props;
@@ -40,6 +42,7 @@ const HomeScreen = props => {
       localApi
         .post('checkLottery', {jwt: user.jwt})
         .then(res => {
+          console.log(res.data);
           if (res.data.data) {
             setLotteryType(res.data.data);
           }
@@ -69,6 +72,109 @@ const HomeScreen = props => {
           />
         </View>
       </View>
+      <ScrollView>
+        {/* time attendance */}
+        <View style={{ alignItems: "center" }}>
+          <LinearGradient 
+            colors={[ '#9CCBFF', '#9DCEFF' ]}
+            style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "90%", alignItems: "center", borderRadius: 20 }}
+          >
+            <View>
+              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
+                Цагийн мэдээ
+              </Text>
+              <View style={{ marginLeft: 3 }}>
+                <Text style={{ fontFamily: "Montserrat-Regular", color: "#fff" }}>
+                  Ажилтны ирцийн мэдээлэл
+                </Text>
+                <TouchableOpacity style={{ alignItems: "center", marginTop: 10 }} onPress={() => navigation.navigate('TimeSheetStack')}>
+                  <LinearGradient
+                      colors={[ '#98B9FE', '#98BCFE' ]}
+                      style={{ width: "100%", borderRadius: 50, alignItems: "center", flexDirection: "row", justifyContent: "center", padding: 7 }}
+                  >   
+                    <Text style={{ fontFamily: "Montserrat-Bold", color: '#fff' }}>
+                      Зочлох
+                    </Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View>
+              <Image
+                source={require("../assets/images/calendar.png")}
+                style={{ width: 70, height: 70 }}
+              />
+            </View>
+          </LinearGradient>
+        </View>
+
+        <View style={{ alignItems: "center", marginTop: 10, flexDirection: "row", justifyContent: "space-between", marginLeft: 20, marginRight: 20 }}>
+          <LinearGradient 
+            colors={[ '#9CCBFF', '#9DCEFF' ]}
+            style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
+          >
+            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('UserProfileStack')}>
+              <Image
+                source={require("../assets/images/userIco.png")}
+                style={{ width: 55, height: 55 }}
+              />
+              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
+                Хувийн мэдээлэл
+              </Text>
+            </TouchableOpacity>
+          </LinearGradient>
+
+          <LinearGradient 
+            colors={[ '#9CCBFF', '#9DCEFF' ]}
+            style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
+          >
+            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('SalaryStack')}>
+              <Image
+                source={require("../assets/images/money.png")}
+                style={{ width: 55, height: 55 }}
+              />
+              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
+                Цалин
+              </Text>
+            </TouchableOpacity>
+          </LinearGradient>
+        </View>
+        {/* categories */}
+        <View style={{ alignItems: "center", marginTop: 10, flexDirection: "row", justifyContent: "space-between", marginLeft: 20, marginRight: 20 }}>
+          <LinearGradient 
+            colors={[ '#9CCBFF', '#9DCEFF' ]}
+            style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
+          >
+            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('PhoneStack')}>
+              <Image
+                source={require("../assets/images/3d-contact.png")}
+                style={{ width: 55, height: 55 }}
+              />
+              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
+                Утасны жагсаалт
+              </Text>
+            </TouchableOpacity>
+          </LinearGradient>
+
+          <LinearGradient 
+            colors={[ '#9CCBFF', '#9DCEFF' ]}
+            style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
+          >
+            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('JobPosition')}>
+              <Image
+                source={require("../assets/images/job-offer.png")}
+                style={{ width: 55, height: 55 }}
+              />
+              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
+                Ажлын байр
+              </Text>
+            </TouchableOpacity>
+          </LinearGradient>
+        </View>
+        {/* warning message */}
+        <Carousel/>
+      </ScrollView>
     </SafeAreaView>
   );
 };

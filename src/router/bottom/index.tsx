@@ -286,7 +286,7 @@ const App = () => {
         options={{
           headerShown: false,
           // @ts-ignore
-          tabBarIcon: ({ ref }) => <Lottie ref={ref} loop={false} source={require('./constants/idCard.json')} style={{ width: 50, height: 50 }} />,
+          tabBarIcon: ({ ref }) => <Lottie ref={ref} loop={true} source={require('./constants/idCard.json')} style={{ width: 50, height: 50 }} />,
         }}
         component={IdCardScreen}
       />
@@ -295,7 +295,7 @@ const App = () => {
         options={{
           headerShown: false,
           // @ts-ignore
-          tabBarIcon: ({ ref }) => <Lottie ref={ref} loop={false} source={require('./constants/user.json')} style={{ width: 30, height: 30, marginTop: 3 }} />,
+          tabBarIcon: ({ ref }) => <Lottie ref={ref} loop={false} source={require('./constants/user.json')} style={{ width: 27, height: 27, marginTop: 3 }} />,
         }}
         component={Profile}
       />
