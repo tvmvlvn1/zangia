@@ -14,10 +14,8 @@ export default StyleSheet.create({
     flexDirection: 'column',
   },
   profileItem: {
-    borderBottomColor: '#eee',
-    borderBottomWidth: 1,
     width: '100%',
-    backgroundColor: '#f8f8f8',
+    backgroundColor: '#fff',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -42,10 +40,12 @@ export default StyleSheet.create({
   name: {
     width: '70%',
     justifyContent: 'center',
+    marginTop: 5
   },
   nameName: {
     fontSize: 18,
     color: 'black',
+    fontFamily: "Montserrat-Medium"
   },
   nameDesc: {
     fontSize: 12,

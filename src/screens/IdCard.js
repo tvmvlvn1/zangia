@@ -1,17 +1,15 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Image,
   Text,
   StyleSheet,
-  TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Colors} from '../components/global/Colors';
+import { Colors } from '../components/global/Colors';
 
-const IdCardScreen = props => {
-  const {navigation} = props;
+const IdCardScreen = () => {
   const [user, setUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
@@ -38,7 +36,7 @@ const IdCardScreen = props => {
     );
   }
   return (
-    <View style={{flex: 1, alignSelf: 'center', justifyContent: 'center', backgroundColor: "#fff", width: "100%", alignItems: "center" }}>
+    <View style={{ flex: 1, alignSelf: 'center', justifyContent: 'center', backgroundColor: "#fff", width: "100%", alignItems: "center" }}>
       <View
         style={{
           justifyContent: 'center',
@@ -48,17 +46,12 @@ const IdCardScreen = props => {
           position: 'relative',
           backgroundColor: '#fff'
         }}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.closeButton}>
-          <Text style={styles.closeButtonText}>X</Text>
-        </TouchableOpacity>
         {user && (
           <Image
             resizeMode="contain"
             style={{
               height: '90%',
-              width: '70%',
+              width: '72%',
               top: 14,
               position: 'absolute',
             }}
@@ -67,11 +60,11 @@ const IdCardScreen = props => {
         )}
         <Image
           resizeMode="contain"
-          style={{ width: 320, height: '100%', borderRadius: 15 }}
+          style={{ width: 320, height: '100%', borderRadius: 20 }}
           source={require('../assets/images/vnemleh.png')}
         />
         <Text style={styles.profileName}>
-          {user.lname}.{user.name}
+          {user.lname}. {user.name}
         </Text>
         <Text style={styles.departmentName}>
           {user.sector ? user.sector : user.department}
@@ -87,17 +80,15 @@ export default IdCardScreen;
 const styles = StyleSheet.create({
   profileName: {
     color: '#000',
-    fontWeight: '700',
     fontSize: 18,
     position: 'absolute',
     top: 383,
+    fontFamily: "Montserrat-Bold"
   },
   departmentName: {
     color: '#000',
     fontWeight: '600',
     fontSize: 10,
-    fontStyle: 'italic',
-    // fontFamily: 'notoserif',
     position: 'absolute',
     top: 428,
     width: '100%',
@@ -105,62 +96,16 @@ const styles = StyleSheet.create({
     paddingLeft: 25,
     paddingRight: 25,
     lineHeight: 11,
+    fontFamily: "Montserrat-MediumItalic"
   },
   jobName: {
     color: '#000',
-    fontWeight: '600',
     fontSize: 10,
-    fontStyle: 'italic',
     position: 'absolute',
     top: 448,
     width: '100%',
     textAlign: 'center',
     lineHeight: 12,
-  },
-  registerName: {
-    color: '#1660AB',
-    textTransform: 'uppercase',
-    fontWeight: '700',
-    fontSize: 12,
-    position: 'absolute',
-    top: 306,
-    width: '100%',
-    textAlign: 'center',
-  },
-  cardNumber: {
-    color: '#f15540',
-    textTransform: 'uppercase',
-    fontWeight: '700',
-    fontSize: 16,
-    position: 'absolute',
-    bottom: 98,
-    width: '100%',
-    right: 70,
-    textAlign: 'right',
-  },
-  cardDate: {
-    textTransform: 'uppercase',
-    fontWeight: '700',
-    fontSize: 20,
-    position: 'absolute',
-    bottom: 40,
-    width: '100%',
-    textAlign: 'right',
-    right: 36,
-    color: '#fff',
-    textShadowOffset: {width: 3, height: 2},
-    textShadowRadius: 1,
-    textShadowColor: '#1660AB',
-  },
-  closeButton: {
-    zIndex: 50,
-    position: 'absolute',
-    top: 25,
-    right: 20,
-  },
-  closeButtonText: {
-    color: '#fff',
-    fontSize: 22,
-    fontWeight: '700',
+    fontFamily: "Montserrat-MediumItalic"
   },
 });

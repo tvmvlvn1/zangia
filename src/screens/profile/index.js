@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, ScrollView, ActivityIndicator} from 'react-native';
+import {View, ScrollView, ActivityIndicator, TouchableOpacity, Text} from 'react-native';
 import styles from './profile.js';
 import InformationScreen from './information';
 import ProfileHeader from './props/profileHeader';
@@ -36,7 +36,12 @@ const Index = props => {
         </View>
       ) : (
         <ScrollView style={styles.profileContainer}>
-          <ProfileHeader user={user} navigation={navigation} />
+          <View style={{ flexDirection: "row", padding: 15, alignItems: "center" }}>
+            <Text style={{ fontFamily: "Montserrat-Bold", color: "#000", fontSize: 18, textAlign: "center", flex: 1 }}>
+              Хувийн мэдээлэл
+            </Text>
+          </View>
+          <ProfileHeader user={user} />
 
           <InformationScreen user={user} navigation={navigation} />
         </ScrollView>

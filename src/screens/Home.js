@@ -59,21 +59,21 @@ const HomeScreen = props => {
           <Text style={{ fontFamily: "Montserrat-Medium", fontSize: 14, color: "#ADA4A5" }}>
             {getGreeting()}
           </Text>
-          <Text style={{ fontFamily: "Montserrat-Bold", fontSize: 20, color: "#000", marginLeft: 3 }}>
+          <Text style={{ fontFamily: "Montserrat-Bold", fontSize: 20, color: "#000", marginLeft: 4 }}>
             {user.name} .{user.lname}
           </Text>
         </View>
-        <View>
+        <TouchableOpacity>
           <EvilIconsIcons
             name={'bell'}
             color={"#000"}
             size={30}
             style={{ marginRight: 5, backgroundColor: "#F7F8F8", padding: 5, borderRadius: 10 }}
           />
-        </View>
+        </TouchableOpacity>
       </View>
       <ScrollView>
-        {/* time attendance */}
+        {/* categories */}
         <View style={{ alignItems: "center" }}>
           <LinearGradient 
             colors={[ '#9CCBFF', '#9DCEFF' ]}
@@ -129,23 +129,6 @@ const HomeScreen = props => {
             colors={[ '#9CCBFF', '#9DCEFF' ]}
             style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
           >
-            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('SalaryStack')}>
-              <Image
-                source={require("../assets/images/money.png")}
-                style={{ width: 55, height: 55 }}
-              />
-              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
-                Цалин
-              </Text>
-            </TouchableOpacity>
-          </LinearGradient>
-        </View>
-        {/* categories */}
-        <View style={{ alignItems: "center", marginTop: 10, flexDirection: "row", justifyContent: "space-between", marginLeft: 20, marginRight: 20 }}>
-          <LinearGradient 
-            colors={[ '#9CCBFF', '#9DCEFF' ]}
-            style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
-          >
             <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('PhoneStack')}>
               <Image
                 source={require("../assets/images/3d-contact.png")}
@@ -153,6 +136,22 @@ const HomeScreen = props => {
               />
               <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
                 Утасны жагсаалт
+              </Text>
+            </TouchableOpacity>
+          </LinearGradient>
+        </View>
+        <View style={{ alignItems: "center", marginTop: 10, flexDirection: "row", justifyContent: "space-between", marginLeft: 20, marginRight: 20 }}>
+          <LinearGradient 
+            colors={[ '#9CCBFF', '#9DCEFF' ]}
+            style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
+          >
+            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('SalaryStack')}>
+              <Image
+                source={require("../assets/images/money.png")}
+                style={{ width: 55, height: 55 }}
+              />
+              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
+                Цалин
               </Text>
             </TouchableOpacity>
           </LinearGradient>
@@ -172,7 +171,38 @@ const HomeScreen = props => {
             </TouchableOpacity>
           </LinearGradient>
         </View>
-        {/* warning message */}
+        <View style={{ alignItems: "center", marginTop: 10, flexDirection: "row", justifyContent: "space-between", marginLeft: 20, marginRight: 20 }}>
+          <LinearGradient 
+            colors={[ '#9CCBFF', '#9DCEFF' ]}
+            style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
+          >
+            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('TimeSheetStack')}>
+              <Image
+                source={require("../assets/images/calendar1.png")}
+                style={{ width: 55, height: 55 }}
+              />
+              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
+                Календар
+              </Text>
+            </TouchableOpacity>
+          </LinearGradient>
+
+          <LinearGradient 
+            colors={[ '#9CCBFF', '#9DCEFF' ]}
+            style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
+          >
+            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('SalaryStack')}>
+              <Image
+                source={require("../assets/images/competition.png")}
+                style={{ width: 55, height: 55 }}
+              />
+              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
+                Тэмцээн
+              </Text>
+            </TouchableOpacity>
+          </LinearGradient>
+        </View>
+        {/* event */}
         <Carousel/>
       </ScrollView>
     </SafeAreaView>

@@ -34,15 +34,6 @@ const QrScreen = props => {
     _animationFinishCallback();
     onOpenScanner();
 
-    navigation.setOptions({
-      headerLeft: () => (
-        <HeaderBackButton
-          label="Буцах"
-          onPress={() => navigation.navigate('TabHome')}
-        />
-      ),
-    });
-
     const subscribe = navigation.addListener('focus', () => {
       onOpenScanner();
       setViewFocused(true);
@@ -316,7 +307,9 @@ const QrScreen = props => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 textTransform: 'uppercase',
-              }}>
+                fontFamily: "Montserrat-Medium"
+              }}
+            >
               QR уншуулах
             </Text>
           }
@@ -356,6 +349,7 @@ const QrScreen = props => {
                   width: '100%',
                   textAlign: 'center',
                   margin: 10,
+                  fontFamily: "Montserrat-Medium"
                 }}>
                 {message}
               </Text>
@@ -368,7 +362,7 @@ const QrScreen = props => {
                   backgroundColor: status ? 'green' : 'red',
                 }}
                 onPress={() => onSuccess(status)}>
-                <Text style={{color: '#fff', padding: 0, margin: 0}}>OK</Text>
+                <Text style={{color: '#fff', padding: 0, margin: 0, fontFamily: "Montserrat-Medium"}}>OK</Text>
               </TouchableOpacity>
             </View>
           </View>
