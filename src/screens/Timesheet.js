@@ -16,6 +16,7 @@ import localApi from '../api/localApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Colors} from '../components/global/Colors';
 import {AuthContext} from '../context/AuthContext';
+import Header from '../components/Header';
 
 const TimeSheetScreen = props => {
   const {navigation} = props;
@@ -210,6 +211,7 @@ const TimeSheetScreen = props => {
   }
   return (
     <View style={styles.container}>
+      <Header name={"Ирцийн мэдээлэл"} navigation={navigation}/>
       <Modal
         animationType="fade"
         transparent={true}

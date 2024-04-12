@@ -1,4 +1,4 @@
-import {TouchableOpacity, Text, View} from 'react-native';
+import {TouchableOpacity, Text, View, Image} from 'react-native';
 import React from 'react';
 import EntypoIcons from 'react-native-vector-icons/Entypo';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
@@ -23,10 +23,9 @@ const Information = ({ user, navigation }) => {
         <View style={{ padding: 5 }}>
           <TouchableOpacity style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <EntypoIcons
-                name='info-with-circle'
-                size={16}
-                color={'#63575A'}
+              <Image
+                source={require("../../assets/images/new-file.png")}
+                style={{ width: 25, height: 25 }}
               />
               <Text style={{ marginLeft: 8, fontFamily: "Montserrat-Regular", color: "#63575A" }}>
                 Үндсэн мэдээлэл
@@ -39,15 +38,14 @@ const Information = ({ user, navigation }) => {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
+          <TouchableOpacity onPress={() => navigation.navigate('EditInformationStack')} style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <EntypoIcons
-                name='info-with-circle'
-                size={16}
-                color={'#63575A'}
+              <Image
+                source={require("../../assets/images/user.png")}
+                style={{ width: 22, height: 22 }}
               />
-              <Text style={{ marginLeft: 8, fontFamily: "Montserrat-Regular", color: "#63575A" }}>
-                Үндсэн мэдээлэл
+              <Text style={{ marginLeft: 11, fontFamily: "Montserrat-Regular", color: "#63575A" }}>
+                Хувийн мэдээлэл
               </Text>
             </View>
             <SimpleLineIcons
@@ -57,15 +55,14 @@ const Information = ({ user, navigation }) => {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
+          <TouchableOpacity onPress={() => navigation.navigate('SignatureStack')} style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <EntypoIcons
-                name='info-with-circle'
-                size={16}
-                color={'#63575A'}
+              <Image
+                source={require("../../assets/images/agreement.png")}
+                style={{ width: 25, height: 25 }}
               />
               <Text style={{ marginLeft: 8, fontFamily: "Montserrat-Regular", color: "#63575A" }}>
-                Үндсэн мэдээлэл
+                Гарын үсэг
               </Text>
             </View>
             <SimpleLineIcons
@@ -95,10 +92,9 @@ const Information = ({ user, navigation }) => {
         <View style={{ padding: 5 }}>
           <TouchableOpacity style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <EntypoIcons
-                name='info-with-circle'
-                size={16}
-                color={'#63575A'}
+              <Image
+                source={require("../../assets/images/notification.png")}
+                style={{ width: 25, height: 25 }}
               />
               <Text style={{ marginLeft: 8, fontFamily: "Montserrat-Regular", color: "#63575A" }}>
                 Pop-up Notification
@@ -130,15 +126,14 @@ const Information = ({ user, navigation }) => {
           Бусад
         </Text>
         <View style={{ padding: 5 }}>
-          <TouchableOpacity style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
+          <TouchableOpacity onPress={() => navigation.navigate('RuleStack')} style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <EntypoIcons
-                name='info-with-circle'
-                size={16}
-                color={'#63575A'}
+              <Image
+                source={require("../../assets/images/cyber-security.png")}
+                style={{ width: 25, height: 25 }}
               />
               <Text style={{ marginLeft: 8, fontFamily: "Montserrat-Regular", color: "#63575A" }}>
-                Үндсэн мэдээлэл
+                Дүрэм, журам стандарт
               </Text>
             </View>
             <SimpleLineIcons
@@ -148,15 +143,14 @@ const Information = ({ user, navigation }) => {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
+          <TouchableOpacity onPress={() => navigation.navigate('AbtStack')} style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <EntypoIcons
-                name='info-with-circle'
-                size={16}
-                color={'#63575A'}
+              <Image
+                source={require("../../assets/images/shield.png")}
+                style={{ width: 25, height: 25 }}
               />
               <Text style={{ marginLeft: 8, fontFamily: "Montserrat-Regular", color: "#63575A" }}>
-                Үндсэн мэдээлэл
+                Ажлын байрны тодорхойлолт
               </Text>
             </View>
             <SimpleLineIcons
@@ -166,15 +160,14 @@ const Information = ({ user, navigation }) => {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
+          <TouchableOpacity onPress={() => navigation.navigate('SalaryStack')} style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <EntypoIcons
-                name='info-with-circle'
-                size={16}
-                color={'#63575A'}
+              <Image
+                source={require("../../assets/images/income.png")}
+                style={{ width: 25, height: 25 }}
               />
               <Text style={{ marginLeft: 8, fontFamily: "Montserrat-Regular", color: "#63575A" }}>
-                Үндсэн мэдээлэл
+                Цалингийн мэдээ
               </Text>
             </View>
             <SimpleLineIcons

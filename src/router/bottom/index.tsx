@@ -5,8 +5,6 @@ import {
   View,
   Text,
   LayoutChangeEvent,
-  SafeAreaView,
-  Image
 } from 'react-native'
 import { BottomTabBarProps, BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Svg, { Path } from 'react-native-svg'
@@ -70,184 +68,133 @@ const HomeStackScreen = () => (
   <HomeStack.Navigator
     initialRouteName="HomeStack"
     screenOptions={{
-      headerShown: true,
-      headerStyle: {},
-      headerTitleStyle: {
-        fontSize: 14,
-      },
-      headerBackTitle: 'Буцах',
-      headerBackTitleStyle: {
-        fontSize: 14,
-      },
-      headerBackgroundContainerStyle: {
-        backgroundColor: '#fff',
-      },
+      headerShown: false,
     }}>
     <HomeStack.Group>
       <HomeStack.Screen
         name="HomeStack"
         component={HomeScreen}
-        options={{
-          title: '',
-          headerShown: false,
-        }}
       />
       <HomeStack.Screen
         name="TimeSheetStack"
         component={TimeSheetScreen}
-        options={{title: 'Ирцийн мэдээлэл'}}
       />
 
       <HomeStack.Screen
         name="SalaryStack"
         component={SalaryScreen}
-        options={{title: 'Цалингийн мэдээлэл'}}
       />
 
       <HomeStack.Screen
         name="JobPosition"
         component={Position}
-        options={{title: 'Нээлттэй ажлын байр'}}
       />
 
       {/* Дүрэм журам */}
       <HomeStack.Screen
         name="RuleStack"
         component={Rule}
-        options={{title: 'Дүрэм, журам, стандарт'}}
       />
       <HomeStack.Screen
         name="RuleViewStack"
         component={RuleView}
-        options={{title: 'Дүрэм, журам, стандарт'}}
       />
       <HomeStack.Screen
         name="RuleFilterStack"
         component={RuleFilter}
-        options={{title: 'Хайх'}}
       />
 
       {/* Ажлын байрны тодорхойлолт */}
       <HomeStack.Screen
         name="AbtStack"
         component={Abt}
-        options={{title: 'Ажлын байрны тодорхойлолт'}}
       />
       <HomeStack.Screen
         name="AbtViewStack"
         component={AbtView}
-        options={{title: 'Ажлын байрны тодорхойлолт'}}
       />
 
       {/* Дэлгүүрийн өрөлт */}
       <HomeStack.Screen
         name="RestockStack"
         component={Restock}
-        options={{title: 'Дэлгүүрийн өрөлт'}}
       />
       <HomeStack.Screen
         name="RestockListStack"
         component={RestockList}
-        options={{title: 'Дэлгүүрийн өрөлт'}}
       />
       <HomeStack.Screen
         name="RestockViewStack"
         component={RestockView}
-        options={{title: 'Дэлгүүрийн өрөлт'}}
       />
 
       {/* Ажилтны мэдээлэл */}
       <HomeStack.Screen
         name="UserProfileStack"
         component={Profile}
-        options={{title: 'Ажилтны мэдээлэл'}}
       />
       <HomeStack.Screen
         name="EditInformationStack"
         component={Self}
-        options={{title: 'Ажилтны мэдээлэл'}}
       />
       <HomeStack.Screen
         name="EditEducationStack"
         component={EditEducation}
-        options={{title: 'Боловсролын мэдээлэл'}}
       />
 
       <HomeStack.Screen
         name="SignatureStack"
         component={Signature}
-        options={{title: 'Гарын үсэг'}}
       />
       <HomeStack.Screen
         name="RegisterSignatureStack"
         component={RegisterSignature}
-        options={{title: 'Гарын үсэг'}}
       />
 
       <HomeStack.Screen
         name="FamilyStack"
         component={Family}
-        options={{title: 'Гэр бүлийн гишүүд'}}
       />
-      {/* <HomeStack.Screen
-        name="EditFamilyStack"
-        component={EditFamily}
-        options={{title: 'Гэр бүлийн гишүүд'}}
-      />
-      <HomeStack.Screen
-        name="ShowFamilyStack"
-        component={ShowFamily}
-        options={{title: 'Гэр бүлийн гишүүд'}}
-      /> */}
 
       <HomeStack.Screen
         name="RelationStack"
         component={DependentMember}
-        options={{title: 'Хамааралтай гишүүд'}}
       />
 
       <HomeStack.Screen
         name="AddressStack"
         component={AddressScreen}
-        options={{title: 'Хаягийн мэдээлэл'}}
       />
 
       {/* Чөлөөний хүсэлт */}
       <HomeStack.Screen
         name="AbsenceRequest"
         component={Absence}
-        options={{title: 'Чөлөөний хүсэлт'}}
       />
       <HomeStack.Screen
         name="AbsenceRequestDetail"
         component={AbsenceDetail}
-        options={{title: 'Дэлгэрэнгүй чөлөөний хүсэлт'}}
       />
       <HomeStack.Screen
         name="CreateAbsence"
         component={CreateAbsenceRequest}
-        options={{title: 'Дэлгэрэнгүй чөлөөний хүсэлт'}}
       />
 
       <HomeStack.Screen
         name="PhoneStack"
         component={Phone}
-        options={{title: 'Утасны жагсаалт'}}
       />
       <HomeStack.Screen
         name="PhoneDetailStack"
         component={PhoneDetail}
-        options={{title: 'Утасны жагсаалт'}}
       />
       <HomeStack.Screen
         name="PhoneDownloadStack"
         component={PhoneDownload}
-        options={{title: 'Утасны жагсаалт'}}
       />
       <HomeStack.Screen
         name="PhoneFilterStack"
         component={PhoneFilter}
-        options={{title: 'Хайх'}}
       />
     </HomeStack.Group>
 
@@ -273,7 +220,7 @@ const App = () => {
         component={HomeStackScreen}
       />
       <Tab.Screen
-        name="Upload"
+        name="QR"
         options={{
           headerShown: false,
           // @ts-ignore
@@ -282,7 +229,7 @@ const App = () => {
         component={QrScreen}
       />
       <Tab.Screen
-        name="Chat"
+        name="IdCard"
         options={{
           headerShown: false,
           // @ts-ignore
@@ -291,7 +238,7 @@ const App = () => {
         component={IdCardScreen}
       />
       <Tab.Screen
-        name="Settings"
+        name="Profile"
         options={{
           headerShown: false,
           // @ts-ignore

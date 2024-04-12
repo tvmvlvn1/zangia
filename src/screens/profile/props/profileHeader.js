@@ -24,8 +24,8 @@ const ProfileHeader = ({ user }) => {
             <Image
               style={{
                 backgroundColor: "#fff",
-                width: 42,
-                height: 42,
+                width: 45,
+                height: 45,
                 borderRadius: 0,
                 overflow: 'hidden',
               }}

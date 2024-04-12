@@ -22,6 +22,7 @@ import call from 'react-native-phone-call';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Contacts from 'react-native-contacts';
 import {useIsFocused} from '@react-navigation/native';
+import Header from '../../components/Header.js';
 
 const Index = props => {
   const {navigation} = props;
@@ -416,6 +417,7 @@ const Index = props => {
   }
   return (
     <View style={{backgroundColor: Colors.background, flex: 1}}>
+      <Header name={"Утасны жагсаалт"} navigation={navigation}/>
       <View style={styles.phoneListHeader}>
         <TouchableOpacity
           style={styles.phoneListHeaderBtn}

@@ -11,13 +11,14 @@ import AddPosition from '../profile/edit/addPosition';
 import localApi from '../../api/localApi';
 import {Alert, TouchableOpacity, View, FlatList, Text} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
+import Header from '../../components/Header.js';
 
-const index = ({navigation}) => {
+const Index = ({ navigation }) => {
   const [isLoading, setIsloading] = useState(0);
   const [page, setPage] = useState('');
   const [loading, setLoading] = useState(true);
   const [positions, setPositions] = useState([]);
-  const [detailInfo, setDetailInfo] = useState({});
+  const [detailInfo, setDetailInfo] = useState('');
 
   useEffect(() => {
     localApi
@@ -41,29 +42,34 @@ const index = ({navigation}) => {
     );
   };
 
-  const renderItem = ({item, idx}) => (
-    <View style={styles.item} key={idx}>
-      <TouchableOpacity style={styles.positionName}>
-        <Text style={styles.positionNameName}>{item.job}</Text>
-        <View style={styles.dates}>
-          <Text style={styles.positionNameJob}>{item.date}</Text>
-          <Text style={styles.positionNameJob3}> - </Text>
-          <Text style={styles.positionNameJob2}>{item.date}</Text>
-        </View>
-      </TouchableOpacity>
-      <View style={styles.phoneAction}>
-        <TouchableOpacity
-          onPress={() => {
-            setDetailInfo(item);
-            setPage('AddPage');
-          }}>
-          <Text style={styles.positionNameJob10}>Анкет бөглөх</Text>
+  const renderItem = ({item, idx}) => {
+    const nameParts = item.name.split('/');
+    return (
+      <View style={styles.item} key={idx}>
+        <TouchableOpacity style={styles.positionName}>
+          <Text style={styles.positionNameName}>{nameParts[3]}</Text>
+          <Text style={styles.heltesName}>{nameParts[2]}</Text>
+          <View style={styles.dates}>
+            <Text style={styles.positionNameJob}>{item.date}</Text>
+            <Text style={styles.positionNameJob3}> - </Text>
+            <Text style={styles.positionNameJob2}>{item.stop_date}</Text>
+          </View>
         </TouchableOpacity>
+        <View style={styles.phoneAction}>
+          <TouchableOpacity
+            onPress={() => {
+              setDetailInfo(nameParts[3]);
+              setPage('AddPage');
+            }}>
+            <Text style={styles.positionNameJob10}>Анкет бөглөх</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
   return (
     <View style={{flex: 1, backgroundColor: Colors.white}}>
+      <Header name={"Ажлын байр"} navigation={navigation}/>
       {page === '' ? (
         <>
           {positions.length > 0 ? (
@@ -99,4 +105,4 @@ const index = ({navigation}) => {
   );
 };
 
-export default index;
+export default Index;

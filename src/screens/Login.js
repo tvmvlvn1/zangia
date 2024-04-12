@@ -279,7 +279,6 @@ const LoginScreen = (props) => {
                             name={isShow ? "eye-outline" : 'eye-off-outline'}
                             color={"#000"}
                             size={20}
-                            style={{ marginRight: 5 }}
                           />
                         </TouchableOpacity>
                       </View>

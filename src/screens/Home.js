@@ -7,7 +7,6 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import localApi from '../api/localApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import EvilIconsIcons from "react-native-vector-icons/EvilIcons";

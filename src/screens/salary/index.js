@@ -24,6 +24,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './style.js';
 import RNPickerSelect from 'react-native-picker-select';
 import {monthOptions} from '../../Global';
+import Header from '../../components/Header.js';
 
 const SalaryScreen = props => {
   const {navigation} = props;
@@ -48,20 +49,7 @@ const SalaryScreen = props => {
 
   useEffect(() => {
     getSalary();
-  }, []);
 
-  const yearOptions = [
-    {
-      label: '2022',
-      value: 2022,
-    },
-    {
-      label: '2023',
-      value: 2023,
-    },
-  ];
-
-  useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
@@ -71,7 +59,20 @@ const SalaryScreen = props => {
         </TouchableOpacity>
       ),
     });
-  });
+  }, []);
+
+  const currentYear = new Date().getFullYear();
+
+  const yearOptions = [
+    {
+      label: (currentYear - 1).toString(),
+      value: currentYear - 1,
+    },
+    {
+      label: currentYear.toString(),
+      value: currentYear,
+    },
+  ];
 
   const renderScene = SceneMap({
     first: () => <Tsalinjih salaryData={salaryData} />,
@@ -123,6 +124,7 @@ const SalaryScreen = props => {
   }
   return (
     <View style={{flex: 1}}>
+      <Header name={"Цалингийн мэдээлэл"} navigation={navigation}/> 
       <Modal
         animationType="fade"
         transparent={true}
@@ -137,6 +139,7 @@ const SalaryScreen = props => {
               <View style={styles.selectContainer}>
                 <RNPickerSelect
                   value={year}
+                  useNativeAndroidPickerStyle={false}
                   placeholder={{label: 'Сонгох', value: null}}
                   style={{
                     inputIOS: {
@@ -156,6 +159,7 @@ const SalaryScreen = props => {
               <View style={styles.selectContainer}>
                 <RNPickerSelect
                   value={month}
+                  useNativeAndroidPickerStyle={false}
                   placeholder={{label: 'Сонгох', value: null}}
                   style={{
                     inputIOS: {
