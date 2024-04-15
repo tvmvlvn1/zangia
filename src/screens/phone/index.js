@@ -19,7 +19,11 @@ import localApi from '../../api/localApi.js';
 import {AuthContext} from '../../context/AuthContext.js';
 import {Colors} from '../../components/global/Colors.js';
 import call from 'react-native-phone-call';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Fumi  } from 'react-native-textinput-effects';
+import AntDesignIcons from "react-native-vector-icons/AntDesign"
+import Octicons from "react-native-vector-icons/Octicons"
+import LinearGradient from 'react-native-linear-gradient';
+import Feather from 'react-native-vector-icons/Feather';
 import Contacts from 'react-native-contacts';
 import {useIsFocused} from '@react-navigation/native';
 import Header from '../../components/Header.js';
@@ -33,8 +37,7 @@ const Index = props => {
   const [isLoading, setIsLoading] = useState(false);
   // list доорхи loader ажиллуулах
   const [loading, setLoading] = useState(false);
-  const [depId, setDepId] = useState(null);
-  const [jobId, setJobId] = useState(null);
+  const [textSearch, setTextSearch] = useState('');
   const [data, setData] = useState([]);
   const [endReached, setEndReached] = useState(false);
   const [phoneContacts, setPhoneContacts] = useState([]);
@@ -46,21 +49,12 @@ const Index = props => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => navigation.navigate('PhoneFilterStack')}
-          style={{marginRight: 5}}>
-          <Ionicons name="search-outline" size={30} color={Colors.text} />
-        </TouchableOpacity>
-      ),
-    });
-
     if (isFocused) {
       setPage(1);
       getList();
     }
   }, [isFocused]);
+
 
   useEffect(() => {
     PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
@@ -257,9 +251,9 @@ const Index = props => {
   };
 
   const saveContact = async (newContact, k, all) => {
-    setDownloadCounter(k + 1);
     var checkContact = ContactsinArray(newContact, phoneContacts);
     console.log(k + 1, '/', allUser.length, '\t', checkContact.status);
+    setDownloadCounter(k + 1);
     if (checkContact.status) {
       let contacts = checkContact.contact;
       contacts.map(item => {
@@ -361,26 +355,38 @@ const Index = props => {
   };
 
   const renderItem = ({item, idx}) => (
-    <View style={styles.item} key={idx}>
-      <TouchableOpacity
-        style={styles.phoneName}
-        onPress={() =>
-          navigation.navigate('PhoneDetailStack', {item, phoneContacts})
-        }>
-        <Text style={styles.phoneNameName}>
-          {item.username} - {item.phone}
-        </Text>
-        <Text style={styles.phoneNameJob}>{item.department}</Text>
-      </TouchableOpacity>
-      <View style={styles.phoneAction}>
+    <View style={{ padding: 10, paddingTop: 5 }}>
+      <View 
+        style={{
+          flexDirection: "row", 
+          justifyContent: "space-between", 
+          alignItems: "center", 
+          padding: 15, 
+          backgroundColor: '#F7F8F8', 
+          borderRadius: 16,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('PhoneDetailStack', {item, phoneContacts})
+          }
+        >
+          <Text style={styles.phoneNameName}>
+            {item.username} - {item.phone}
+          </Text>
+          <Text style={styles.phoneNameJob}>
+            @{item.department}
+          </Text>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             phoneCall(item.phone);
-          }}>
-          <Image
-            resizeMode="contain"
-            style={{width: 35, height: 35}}
-            source={require('../../assets/images/phone-icon.png')}
+          }}
+        >
+          <Feather
+            name='phone-call'
+            size={22}
+            color={"#000"}
           />
         </TouchableOpacity>
       </View>
@@ -411,47 +417,65 @@ const Index = props => {
           backgroundColor: '#fff',
         }}>
         <ActivityIndicator color={Colors.primary} size="large" />
-        <Text style={{color: '#333'}}>Уншиж байна...</Text>
       </View>
     );
   }
   return (
-    <View style={{backgroundColor: Colors.background, flex: 1}}>
+    <View style={{backgroundColor: "#fff", flex: 1}}>
       <Header name={"Утасны жагсаалт"} navigation={navigation}/>
-      <View style={styles.phoneListHeader}>
-        <TouchableOpacity
-          style={styles.phoneListHeaderBtn}
-          onPress={() => downloadContacts()}>
-          {isDownloaded ? (
-            <Text style={styles.phoneListHeaderText}>
-              {props.route.params?.selectedDepId ? `Татагдаж байна...  ${(downloadCounter + '/' + data.length)}` : `Татагдаж байна...  ${downloadCounter + '/' + allUser.length}`}
-            </Text>
-          ) : (
-            <Text style={styles.phoneListHeaderText}>
-                {!props.route.params?.selectedDepId ? "Бүх утасны жагсаалт татаж авах" : "Энэ хэлтэсийн утасны жагсаалт татаж авах"}
-            </Text>
-          )}
+      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%", padding: 10, paddingTop: 0 }}>
+        <Fumi
+          placeholder='Нэр эсвэл утас'
+          iconClass={AntDesignIcons}
+          iconName={'search1'}
+          iconColor={'#97B6FE'}
+          iconSize={20}
+          iconWidth={40}
+          inputPadding={16}
+          value={textSearch}
+          onChangeText={(text) => setTextSearch(text)}
+          inputStyle={{ fontFamily: "Montserrat-Medium", color: "#000", marginBottom: 13, fontSize: 15 }}
+          style={{ backgroundColor: "#F7F8F8", borderRadius: 14, fontFamily: "Montserrat-Medium", marginTop: 10, width: "80%" }}
+        />
+        <TouchableOpacity style={{ backgroundColor: "#F7F8F8", padding: 20, marginTop: 10, borderRadius: 20 }}>
+          <Image
+            source={require("../../assets/images/SearchFilter.png")}
+            style={{ width: 22, height: 22 }}
+          />
         </TouchableOpacity>
       </View>
-      {data.length > 0 ? (
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          onEndReached={() => {
-            if (!loading && !endReached) setPage(page + 1);
-          }}
-          initialNumToRender={5}
-          onEndReachedThreshold={0.5}
-          maxToRenderPerBatch={5}
-          windowSize={5}
-          ListFooterComponent={renderFooter}
-        />
-      ) : (
-        <Text style={{color: Colors.text, textAlign: 'center', marginTop: 10}}>
-          Илэрц олдсонгүй
-        </Text>
-      )}
+      {
+        data.length > 0 ? (
+          <FlatList
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            onEndReached={() => {
+              if (!loading && !endReached) setPage(page + 1);
+            }}
+            initialNumToRender={5}
+            onEndReachedThreshold={0.5}
+            maxToRenderPerBatch={5}
+            windowSize={5}
+            ListFooterComponent={renderFooter}
+          />
+        ) : (
+          <Text style={{color: Colors.text, textAlign: 'center', marginTop: 10, fontFamily: "Montserrat-SemiBold"}}>
+            Илэрц олдсонгүй
+          </Text>
+        )
+      }
+      
+      <TouchableOpacity style={{ bottom: 10, position: "absolute", width: "90%", alignSelf: "center" }} onPress={() => downloadContacts()}>
+        <LinearGradient 
+          colors={[ '#9CCBFF', '#9DCEFF' ]}
+          style={{ padding: 15, borderRadius: 99, alignItems: "center" }}
+        >
+          <Text style={{ color: "#fff", fontFamily: "Montserrat-SemiBold", fontSize: 16 }}>
+            {isDownloaded ? (props.route.params?.selectedDepId ? `Татагдаж байна... ${(downloadCounter + '/' + data.length)}` : `Татагдаж байна... ${downloadCounter + '/' + allUser.length}`) : (!props.route.params?.selectedDepId ? "Утасны жагсаалт татах" : "Энэ хэлтэсийн утасны жагсаалт татах")}
+          </Text>
+        </LinearGradient>
+      </TouchableOpacity>
     </View>
   );
 };

@@ -47,13 +47,14 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   phoneNameName: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#444444',
+    fontFamily: "Montserrat-Regular"
   },
   phoneNameJob: {
-    marginTop: 5,
-    fontSize: 14,
+    fontSize: 12,
     color: '#4c4c4c',
+    fontFamily: "Montserrat-Medium"
   },
   phoneDownload: {
     flexDirection: 'row',

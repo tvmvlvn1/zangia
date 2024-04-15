@@ -10,6 +10,7 @@ import {
 import {createStackNavigator} from '@react-navigation/stack';
 import NetInfo from '@react-native-community/netinfo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ALERT_TYPE, Dialog } from 'react-native-alert-notification';
 import LoginScreen from '../screens/Login';
 import ForgetScreen from '../screens/forget/Forget';
 import RecoverPass from '../screens/forget/Recover';
@@ -148,19 +149,14 @@ const Navigation = ({navigation}) => {
   };
 
   const showAlert = () => {
-    return Alert.alert(
-      'Шинэчлэл хийх',
-      'Сүүийн хувилбарыг  [OK]  дарж шинэчилнэ үү',
-      [
-        {
-          text: 'Болих',
-          // onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        {text: '[OK]', onPress: () => updateVersion()},
-      ],
-      {cancelable: false},
-    );
+    return Dialog.show({
+      type: ALERT_TYPE.SUCCESS,
+      title: 'Шинэчлэл хийх',
+      textBody: `Сүүийн хувилбарыг  [Зөвшөөрөх]  дарж шинэчилнэ үү`,
+      button: 'Зөвшөөрөх',
+      onPressButton: () => updateVersion(),
+      textBodyStyle: { fontFamily: "Montserrat-Bold" }
+    })
   };
 
   const updateVersion = () => {

@@ -81,7 +81,7 @@ function Index() {
         <View style={{ flex: 1, margin: "5%" }}>
             { events && events.length > 0 &&
                 <>
-                    <Text style={{ fontFamily: "Montserrat-SemiBold", fontSize: 16, color: "#000" }}>
+                    <Text style={{ fontFamily: "Montserrat-SemiBold", fontSize: 16, color: "#000", marginBottom: 5 }}>
                         {events[0].eventname}
                     </Text>
                     <Carousel
