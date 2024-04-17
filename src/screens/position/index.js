@@ -9,11 +9,12 @@ import styles from './style.js';
 import {Colors} from '../../components/global/Colors';
 import AddPosition from '../profile/edit/addPosition';
 import localApi from '../../api/localApi';
-import {Alert, TouchableOpacity, View, FlatList, Text} from 'react-native';
+import {Alert, TouchableOpacity, View, FlatList, Text, Image} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import Header from '../../components/Header.js';
+import Lottie from "lottie-react-native";
 
-const Index = ({ navigation }) => {
+const Index = ({navigation}) => {
   const [isLoading, setIsloading] = useState(0);
   const [page, setPage] = useState('');
   const [loading, setLoading] = useState(true);
@@ -45,23 +46,39 @@ const Index = ({ navigation }) => {
   const renderItem = ({item, idx}) => {
     const nameParts = item.name.split('/');
     return (
-      <View style={styles.item} key={idx}>
-        <TouchableOpacity style={styles.positionName}>
-          <Text style={styles.positionNameName}>{nameParts[3]}</Text>
-          <Text style={styles.heltesName}>{nameParts[2]}</Text>
-          <View style={styles.dates}>
-            <Text style={styles.positionNameJob}>{item.date}</Text>
-            <Text style={styles.positionNameJob3}> - </Text>
-            <Text style={styles.positionNameJob2}>{item.stop_date}</Text>
+      <View style={{ backgroundColor: "#F7F8F8", margin: 10, marginTop: 0, borderRadius: 16 }} key={idx}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: 10 }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+            <Image
+              source={require("../../assets/images/job-rotation.png")}
+              style={{ width: 50, height: 50 }}
+            />
+            <View style={{ marginLeft: 5 }}>
+              <Text style={styles.positionNameName}>
+                {nameParts[3]}
+              </Text>
+              <Text style={styles.heltesName}>
+                {nameParts[2]}
+              </Text>
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.positionNameJob}>
+                  {item.date} - 
+                </Text>
+                <Text style={styles.positionNameJob2}>
+                  {" "}{item.stop_date}
+                </Text>
+              </View>
+            </View>
           </View>
-        </TouchableOpacity>
-        <View style={styles.phoneAction}>
-          <TouchableOpacity
+          <TouchableOpacity 
             onPress={() => {
               setDetailInfo(nameParts[3]);
               setPage('AddPage');
-            }}>
-            <Text style={styles.positionNameJob10}>Анкет бөглөх</Text>
+            }}
+          >
+            <Text style={styles.positionNameJob10}>
+              Анкет {"\n"}бөглөх
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -84,10 +101,12 @@ const Index = ({ navigation }) => {
               ListFooterComponent={renderFooter}
             />
           ) : (
-            <Text
-              style={{color: Colors.text, textAlign: 'center', marginTop: 10}}>
-              Илэрц олдсонгүй
-            </Text>
+            <Lottie
+              autoPlay
+              loop
+              style={{ flex: 1, justifyContent: 'center' }}
+              source={require('../../assets/lottie/loading.json')}
+            />
           )}
         </>
       ) : (

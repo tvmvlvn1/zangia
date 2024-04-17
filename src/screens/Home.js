@@ -71,7 +71,7 @@ const HomeScreen = props => {
           />
         </TouchableOpacity>
       </View>
-      <ScrollView>
+      <ScrollView style={{ marginBottom: "2%" }}>
         {/* categories */}
         <View style={{ alignItems: "center" }}>
           <LinearGradient 
@@ -190,7 +190,7 @@ const HomeScreen = props => {
             colors={[ '#9CCBFF', '#9DCEFF' ]}
             style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
           >
-            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('SalaryStack')}>
+            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('CompScreen')}>
               <Image
                 source={require("../assets/images/competition.png")}
                 style={{ width: 55, height: 55 }}

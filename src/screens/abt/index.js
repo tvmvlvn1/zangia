@@ -4,7 +4,6 @@ import {
   Alert,
   FlatList,
   Text,
-  ActivityIndicator,
   TouchableOpacity,
   Image,
 } from 'react-native';
@@ -13,6 +12,7 @@ import styles from './abtstyle.js';
 import localApi from '../../api/localApi';
 import {Colors} from '../../components/global/Colors.js';
 import {AuthContext} from '../../context/AuthContext.js';
+import Lottie from 'lottie-react-native';
 
 const Index = props => {
   const {navigation} = props;
@@ -87,16 +87,12 @@ const Index = props => {
 
   if (isLoading) {
     return (
-      <View
-        style={{
-          justifyContent: 'center',
-          flex: 1,
-          alignItems: 'center',
-          backgroundColor: '#fff',
-        }}>
-        <ActivityIndicator color={Colors.primary} size="large" />
-        <Text style={{color: '#333'}}>Уншиж байна...</Text>
-      </View>
+      <Lottie
+        autoPlay
+        loop
+        style={{ flex: 1, justifyContent: 'center' }}
+        source={require('../../assets/lottie/loading.json')}
+      />
     );
   }
   return (

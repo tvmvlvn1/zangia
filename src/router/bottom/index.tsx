@@ -54,11 +54,11 @@ import Position from '../../screens/position';
 // Phone router
 import Phone from '../../screens/phone';
 import PhoneDetail from '../../screens/phone/detail';
-import PhoneDownload from '../../screens/phone/pick';
-import PhoneFilter from '../../screens/phone/filter';
 
 import TimeSheetScreen from '../../screens/Timesheet';
 import SalaryScreen from '../../screens/salary';
+import CompScreen from '../../screens/comp';
+import DetailCompScreen from '../../screens/comp/detail';
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createStackNavigator()
@@ -88,8 +88,17 @@ const HomeStackScreen = () => (
       <HomeStack.Screen
         name="JobPosition"
         component={Position}
+      /> 
+
+      <HomeStack.Screen
+        name="CompScreen"
+        component={CompScreen}
       />
 
+      <HomeStack.Screen
+        name="DetailCompScreen"
+        component={DetailCompScreen}
+      />
       {/* Дүрэм журам */}
       <HomeStack.Screen
         name="RuleStack"
@@ -187,14 +196,6 @@ const HomeStackScreen = () => (
       <HomeStack.Screen
         name="PhoneDetailStack"
         component={PhoneDetail}
-      />
-      <HomeStack.Screen
-        name="PhoneDownloadStack"
-        component={PhoneDownload}
-      />
-      <HomeStack.Screen
-        name="PhoneFilterStack"
-        component={PhoneFilter}
       />
     </HomeStack.Group>
 

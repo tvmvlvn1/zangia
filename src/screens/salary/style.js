@@ -23,10 +23,11 @@ export default StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     color: '#000',
+    fontFamily: "Montserrat-Medium"
   },
   tsalinjihRowAmount: {
     textAlign: 'right',
-    fontWeight: '700',
+    fontFamily: "Montserrat-Bold",
     color: '#000',
     width: '100%',
     flex: 1,

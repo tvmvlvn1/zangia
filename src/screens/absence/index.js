@@ -4,10 +4,10 @@ import {
   Alert,
   FlatList,
   Text,
-  ActivityIndicator,
   TouchableOpacity,
   Image,
 } from 'react-native';
+import Lottie from 'lottie-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './asbencestyle.js';
 import api from '../../api/localApi.js';
@@ -133,16 +133,12 @@ const Index = props => {
 
   if (isLoading) {
     return (
-      <View
-        style={{
-          justifyContent: 'center',
-          flex: 1,
-          alignItems: 'center',
-          backgroundColor: '#fff',
-        }}>
-        <ActivityIndicator color={Colors.primary} size="large" />
-        <Text style={{color: '#333'}}>Уншиж байна...</Text>
-      </View>
+      <Lottie
+        autoPlay
+        loop
+        style={{ flex: 1, justifyContent: 'center' }}
+        source={require('../../assets/lottie/loading.json')}
+      />
     );
   }
 

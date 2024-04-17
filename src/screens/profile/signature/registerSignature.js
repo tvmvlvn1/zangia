@@ -7,12 +7,11 @@ import {
   Image,
   Alert,
   ScrollView,
-  ActivityIndicator,
 } from 'react-native';
+import Lottie from 'lottie-react-native';
 import localApi from '../../../api/localApi';
 import SignatureCapture from 'react-native-signature-capture';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Colors} from '../../../components/global/Colors';
 import {AuthContext} from '../../../context/AuthContext';
 
 const RegisterSignature = props => {
@@ -117,16 +116,12 @@ const RegisterSignature = props => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       {loader ? (
-        <View
-          style={{
-            justifyContent: 'center',
-            flex: 1,
-            alignItems: 'center',
-            backgroundColor: '#fff',
-          }}>
-          <ActivityIndicator color={Colors.primary} size="large" />
-          <Text style={{color: '#333'}}>Уншиж байна...</Text>
-        </View>
+        <Lottie
+          autoPlay
+          loop
+          style={{ flex: 1, justifyContent: 'center' }}
+          source={require('../../../assets/lottie/loading.json')}
+        />
       ) : (
         <View style={{flex: 1}}>
           <SignatureCapture

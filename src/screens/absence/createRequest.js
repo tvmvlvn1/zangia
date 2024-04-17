@@ -16,7 +16,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {DatePickerModal} from 'react-native-paper-dates';
 import moment from 'moment';
 import api from '../../api/localApi.js';
-import {ActivityIndicator} from 'react-native-paper';
+import Lottie from 'lottie-react-native';
 
 const CreateRequest = props => {
   const [showDatePickerStartDate, setShowDatePickerStartDate] = useState(false);
@@ -258,11 +258,11 @@ const CreateRequest = props => {
   return (
     <>
       {apiLoader ? (
-        <ActivityIndicator
-          animating={true}
-          color={'#0858A3'}
-          style={{flex: 1, justifyContent: 'center'}}
-          size={'large'}
+        <Lottie
+          autoPlay
+          loop
+          style={{ flex: 1, justifyContent: 'center' }}
+          source={require('../../assets/lottie/loading.json')}
         />
       ) : (
         <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>

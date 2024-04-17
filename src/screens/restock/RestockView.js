@@ -1,9 +1,9 @@
-import {ActivityIndicator, View} from 'react-native';
+import {View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {WebView} from 'react-native-webview';
+import Lottie from 'lottie-react-native';
 import {config} from '../../Global';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Colors} from '../../components/global/Colors';
 
 const RestockView = props => {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,13 +19,12 @@ const RestockView = props => {
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       {isLoading && (
-        <View
-          style={{
-            height: '100%',
-            justifyContent: 'center',
-          }}>
-          <ActivityIndicator color={Colors.primary} size="large" />
-        </View>
+        <Lottie
+          autoPlay
+          loop
+          style={{ flex: 1, justifyContent: 'center' }}
+          source={require('../../assets/lottie/loading.json')}
+        />
       )}
       <WebView
         onLoadStart={() => setIsLoading(true)}

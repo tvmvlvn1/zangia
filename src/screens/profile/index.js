@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {View, ScrollView, ActivityIndicator} from 'react-native';
+import {View, ScrollView} from 'react-native';
 import styles from './profile.js';
+import Lottie from 'lottie-react-native';
 import InformationScreen from './information';
 import ProfileHeader from './props/profileHeader';
 import {GetServer} from './restService/server';
@@ -33,9 +34,12 @@ const Index = props => {
     <View style={styles.container}>
       <Header name={"Хувийн мэдээлэл"} navigation={navigation}/>
       {isLoading ? (
-        <View style={{flex: 1, justifyContent: 'center'}}>
-          <ActivityIndicator size={'large'} color="#1660AB" />
-        </View>
+        <Lottie
+          autoPlay
+          loop
+          style={{ flex: 1, justifyContent: 'center' }}
+          source={require('../../assets/lottie/loading.json')}
+        />
       ) : (
         <ScrollView style={styles.profileContainer}>
           <ProfileHeader user={user} />

@@ -31,9 +31,7 @@ const Detail = (props) => {
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <ImageBackground
-        source={{
-          uri: "https://flexmg.com/wp-content/uploads/2022/06/blg-call-stats-marketer.jpg",
-        }}
+        source={require("../../assets/images/detailPhone.jpg")}
         style={{
           flex: 1,
           justifyContent: 'center',

@@ -13,7 +13,7 @@ import {
 import moment from 'moment';
 import {ScrollView} from 'react-native-gesture-handler';
 import api from '../../api/localApi.js';
-import {ActivityIndicator} from 'react-native-paper';
+import Lottie from 'lottie-react-native';
 
 const AbsenceRequestDetail = props => {
   const [reason, setReason] = useState('');
@@ -152,10 +152,11 @@ const AbsenceRequestDetail = props => {
   return (
     <SafeAreaView style={{flex: 1}}>
       {loading ? (
-        <ActivityIndicator
-          animating={true}
-          size={'small'}
-          style={{flex: 1, justifyContent: 'center'}}
+        <Lottie
+          autoPlay
+          loop
+          style={{ flex: 1, justifyContent: 'center' }}
+          source={require('../../assets/lottie/loading.json')}
         />
       ) : (
         <View style={styles.container}>

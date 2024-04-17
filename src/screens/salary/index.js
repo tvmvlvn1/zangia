@@ -1,11 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
-  ActivityIndicator,
   Alert,
   Modal,
-  ScrollView,
   Text,
-  TouchableOpacity,
   View,
   useWindowDimensions,
   Pressable,
@@ -20,11 +17,11 @@ import Uuriin from './Uuriin';
 import Busad from './Busad';
 import Suutgal from './Suutgal';
 import NiitTsalin from './NiitTsalin';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './style.js';
 import RNPickerSelect from 'react-native-picker-select';
 import {monthOptions} from '../../Global';
 import Header from '../../components/Header.js';
+import Lottie from 'lottie-react-native';
 
 const SalaryScreen = props => {
   const {navigation} = props;
@@ -49,16 +46,6 @@ const SalaryScreen = props => {
 
   useEffect(() => {
     getSalary();
-
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => setModalVisible(true)}
-          style={{marginRight: 5}}>
-          <Ionicons name="search-outline" size={30} color={Colors.text} />
-        </TouchableOpacity>
-      ),
-    });
   }, []);
 
   const currentYear = new Date().getFullYear();
@@ -110,20 +97,16 @@ const SalaryScreen = props => {
 
   if (isLoading) {
     return (
-      <View
-        style={{
-          justifyContent: 'center',
-          flex: 1,
-          alignItems: 'center',
-          backgroundColor: '#fff',
-        }}>
-        <ActivityIndicator color={Colors.primary} size="large" />
-        <Text style={{color: '#333'}}>Уншиж байна...</Text>
-      </View>
+      <Lottie
+        autoPlay
+        loop
+        style={{ flex: 1, justifyContent: 'center' }}
+        source={require('../../assets/lottie/loading.json')}
+      />
     );
   }
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <Header name={"Цалингийн мэдээлэл"} navigation={navigation}/> 
       <Modal
         animationType="fade"
@@ -195,13 +178,14 @@ const SalaryScreen = props => {
             tabStyle={{width: 150}}
             scrollEnabled={true}
             style={{backgroundColor: Colors.primary}}
+            labelStyle={{fontFamily: "Montserrat-Medium"}}
           />
         )}
         navigationState={{index, routes}}
         renderScene={renderScene}
         onIndexChange={setIndex}
         initialLayout={{width: layout.width + 1000}}
-        style={{backgroundColor: Colors.white}}
+        style={{backgroundColor: Colors.white, marginBottom: "5%"}}
       />
     </View>
   );

@@ -27,9 +27,8 @@ export default StyleSheet.create({
     },
     item: {
         flexDirection: 'row',
-        flexWrap: 'wrap',
         width: '100%',
-        backgroundColor: '#fff'
+        backgroundColor: '#ececec',
     },
     dates: {
         flexDirection: 'row',
@@ -40,34 +39,30 @@ export default StyleSheet.create({
         padding: 15,
         width: '80%',
         flexDirection: 'column',
-        borderBottomColor: '#eee',
-        borderBottomWidth: 1,
+    },
+    heltesName: {
+        fontSize: 11,
+        fontFamily: "Montserrat-Medium"
     },
     phoneAction: {
         width: '20%',
-        borderLeftColor: '#eee',
-        borderLeftWidth: 1,
-        borderBottomColor: '#eee',
-        borderBottomWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
     positionNameName: {
-        fontSize: 18,
+        fontSize: 15,
         color: '#444444',
-        fontWeight: '400',
+        fontFamily: "Montserrat-SemiBold"
     },
     positionNameJob: {
-        marginTop: 5,
         fontSize: 12,
         color: '#2e5fa6',
-        // fontWeight: '400',
+        fontFamily: "Montserrat-Medium"
     },
     positionNameJob2: {
-        marginTop: 5,
         fontSize: 12,
         color: '#dd4e42',
-        fontWeight: '400',
+        fontFamily: "Montserrat-Medium"
     },
     positionNameJob3: {
         marginTop: 5,
@@ -82,6 +77,7 @@ export default StyleSheet.create({
         borderRadius: 4,
         marginTop: 5,
         fontSize: 12,
-        fontWeight: '400',
+        fontFamily: "Montserrat-Bold",
+        color: "#000"
     },
 });

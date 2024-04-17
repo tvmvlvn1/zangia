@@ -20,7 +20,7 @@ const Improve = () => {
           width: 150,
           height: 150,
         }}
-        source={require('../../../assets/lottie/Loader.json')}
+        source={require('../../../assets/lottie/loading.json')}
       />
     </View>
   );

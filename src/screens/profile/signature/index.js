@@ -4,13 +4,12 @@ import {
   SafeAreaView,
   Image,
   Text,
-  Platform,
   TouchableOpacity,
   Alert,
 } from 'react-native';
 import LottieView from 'lottie-react-native';
 import localApi from '../../../api/localApi';
-import {ActivityIndicator} from 'react-native-paper';
+import Lottie from 'lottie-react-native';
 import {useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AuthContext} from '../../../context/AuthContext';
@@ -61,10 +60,11 @@ const Index = props => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       {loader ? (
-        <ActivityIndicator
-          animating={true}
-          style={{flex: 1, justifyContent: 'center'}}
-          color="#3b5998"
+        <Lottie
+          autoPlay
+          loop
+          style={{ flex: 1, justifyContent: 'center' }}
+          source={require('../../../assets/lottie/loading.json')}
         />
       ) : (
         <>

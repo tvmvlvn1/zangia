@@ -10,9 +10,10 @@ import {
   Alert,
   Image,
   FlatList,
-  ActivityIndicator,
   PermissionsAndroid,
+  ActivityIndicator
 } from 'react-native';
+import Lottie from 'lottie-react-native';
 import styles from './style.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import localApi from '../../api/localApi.js';
@@ -21,21 +22,18 @@ import {Colors} from '../../components/global/Colors.js';
 import call from 'react-native-phone-call';
 import { Fumi  } from 'react-native-textinput-effects';
 import AntDesignIcons from "react-native-vector-icons/AntDesign"
-import Octicons from "react-native-vector-icons/Octicons"
 import LinearGradient from 'react-native-linear-gradient';
 import Feather from 'react-native-vector-icons/Feather';
 import Contacts from 'react-native-contacts';
 import {useIsFocused} from '@react-navigation/native';
 import Header from '../../components/Header.js';
+import BottomSheet from './bottom.js';
 
 const Index = props => {
   const {navigation} = props;
   const {logout} = useContext(AuthContext);
-  const [user, setUser] = useState({});
   const [page, setPage] = useState(1);
-  const [text, setText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  // list доорхи loader ажиллуулах
   const [loading, setLoading] = useState(false);
   const [textSearch, setTextSearch] = useState('');
   const [data, setData] = useState([]);
@@ -45,7 +43,8 @@ const Index = props => {
   const [isDownloaded, setIsDownloaded] = useState(false);
   const [downloadCounter, setDownloadCounter] = useState(0);
   const [readyDownload, setReadyDownload] = useState(false);
-
+  const [status, setStatus] = useState(false);
+  const [selected, setSelected] = useState(null);
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -71,7 +70,6 @@ const Index = props => {
 
     AsyncStorage.getItem('userInfo').then(userInfo => {
       let user = JSON.parse(userInfo);
-      setUser(user);
       localApi
         .post('mobilePhone', {
           jwt: user.jwt,
@@ -95,7 +93,7 @@ const Index = props => {
 
   useEffect(() => {
     getList();
-  }, [page]);
+  }, [page, selected]);
 
   const phoneCall = phoneNumber => {
     const args = {
@@ -112,14 +110,13 @@ const Index = props => {
     AsyncStorage.getItem('userInfo')
       .then(userInfo => {
         let user = JSON.parse(userInfo);
-        setUser(user);
         localApi
           .post('mobilePhone', {
             jwt: user.jwt,
             page: page,
             limit: 25,
             find: props.route.params?.text,
-            dep_id: props.route.params?.depId ? props.route.params?.depId : props.route.params?.selectedDepId,
+            dep_id: props.route.params?.depId ? props.route.params?.depId : selected,
             job_id: props.route.params?.jobId,
           })
           .then(res => {
@@ -190,7 +187,7 @@ const Index = props => {
 
   const startDownloading = async () => {
 
-    if (props.route.params?.selectedDepId) {
+    if (selected) {
       data.map((item, k) => {
         var newContact = {
           company: item.job,
@@ -263,7 +260,7 @@ const Index = props => {
     await newMyContact(newContact);
     
     if (all == k + 1) {
-      props.route.params?.selectedDepId ? (Alert.alert(`${(JSON.stringify(data[0].department))} - ийн: ` + data.length + ' жагсаалт татагдав.')) : (Alert.alert('Нийт: ' + allUser.length + ' жагсаалт татагдав.'));
+      selected ? (Alert.alert(`${(JSON.stringify(data[0].department))} - ийн: ` + data.length + ' жагсаалт татагдав.')) : (Alert.alert('Нийт: ' + allUser.length + ' жагсаалт татагдав.'));
       Contacts.getAll().then(contacts => {
         setPhoneContacts(contacts);
       });
@@ -409,19 +406,16 @@ const Index = props => {
 
   if (isLoading) {
     return (
-      <View
-        style={{
-          justifyContent: 'center',
-          flex: 1,
-          alignItems: 'center',
-          backgroundColor: '#fff',
-        }}>
-        <ActivityIndicator color={Colors.primary} size="large" />
-      </View>
+      <Lottie
+        autoPlay
+        loop
+        style={{ flex: 1, justifyContent: 'center' }}
+        source={require('../../assets/lottie/loading.json')}
+      />
     );
   }
   return (
-    <View style={{backgroundColor: "#fff", flex: 1}}>
+    <View style={{ backgroundColor: "#fff", flex: 1 }}>
       <Header name={"Утасны жагсаалт"} navigation={navigation}/>
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%", padding: 10, paddingTop: 0 }}>
         <Fumi
@@ -437,7 +431,7 @@ const Index = props => {
           inputStyle={{ fontFamily: "Montserrat-Medium", color: "#000", marginBottom: 13, fontSize: 15 }}
           style={{ backgroundColor: "#F7F8F8", borderRadius: 14, fontFamily: "Montserrat-Medium", marginTop: 10, width: "80%" }}
         />
-        <TouchableOpacity style={{ backgroundColor: "#F7F8F8", padding: 20, marginTop: 10, borderRadius: 20 }}>
+        <TouchableOpacity onPress={() => setStatus(true)} style={{ backgroundColor: "#F7F8F8", padding: 20, marginTop: 10, borderRadius: 20 }}>
           <Image
             source={require("../../assets/images/SearchFilter.png")}
             style={{ width: 22, height: 22 }}
@@ -460,22 +454,27 @@ const Index = props => {
             ListFooterComponent={renderFooter}
           />
         ) : (
-          <Text style={{color: Colors.text, textAlign: 'center', marginTop: 10, fontFamily: "Montserrat-SemiBold"}}>
-            Илэрц олдсонгүй
-          </Text>
+          <Lottie
+            autoPlay
+            loop
+            style={{ flex: 1, justifyContent: 'center' }}
+            source={require('../../assets/lottie/loading.json')}
+          />
         )
       }
       
-      <TouchableOpacity style={{ bottom: 10, position: "absolute", width: "90%", alignSelf: "center" }} onPress={() => downloadContacts()}>
+      <TouchableOpacity style={{ width: "90%", alignSelf: "center", marginBottom: "3%" }} onPress={() => downloadContacts()}>
         <LinearGradient 
           colors={[ '#9CCBFF', '#9DCEFF' ]}
           style={{ padding: 15, borderRadius: 99, alignItems: "center" }}
         >
           <Text style={{ color: "#fff", fontFamily: "Montserrat-SemiBold", fontSize: 16 }}>
-            {isDownloaded ? (props.route.params?.selectedDepId ? `Татагдаж байна... ${(downloadCounter + '/' + data.length)}` : `Татагдаж байна... ${downloadCounter + '/' + allUser.length}`) : (!props.route.params?.selectedDepId ? "Утасны жагсаалт татах" : "Энэ хэлтэсийн утасны жагсаалт татах")}
+            {isDownloaded ? (selected ? `Татагдаж байна... ${(downloadCounter + '/' + data.length)}` : `Татагдаж байна... ${downloadCounter + '/' + allUser.length}`) : (!selected ? "Утасны жагсаалт татах" : "Хэлтэсийн утасны жагсаалт татах")}
           </Text>
         </LinearGradient>
       </TouchableOpacity>
+
+      { status && <BottomSheet setStatus={ setStatus } setSelected={ setSelected }/> }
     </View>
   );
 };

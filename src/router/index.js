@@ -1,16 +1,15 @@
 import React, {useEffect, useState, useContext, useRef} from 'react';
 import {
-  ActivityIndicator,
   View,
   Platform,
   Linking,
-  Alert,
   AppState,
 } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import NetInfo from '@react-native-community/netinfo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ALERT_TYPE, Dialog } from 'react-native-alert-notification';
+import Lottie from 'lottie-react-native';
 import LoginScreen from '../screens/Login';
 import ForgetScreen from '../screens/forget/Forget';
 import RecoverPass from '../screens/forget/Recover';
@@ -190,9 +189,12 @@ const Navigation = ({navigation}) => {
   if (isLoading) {
     // We haven't finished checking for the token yet
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator color="#1660AB" size="large" />
-      </View>
+      <Lottie
+        autoPlay
+        loop
+        style={{ flex: 1, justifyContent: 'center' }}
+        source={require('../assets/lottie/loading.json')}
+      />
     );
   }
   return (

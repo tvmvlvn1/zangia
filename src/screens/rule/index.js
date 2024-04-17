@@ -15,6 +15,7 @@ import {Colors} from '../../components/global/Colors.js';
 import {AuthContext} from '../../context/AuthContext.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useIsFocused} from '@react-navigation/native';
+import Lottie from "lottie-react-native";
 
 const Index = props => {
   const {navigation} = props;
@@ -151,16 +152,12 @@ const Index = props => {
 
   if (isLoading) {
     return (
-      <View
-        style={{
-          justifyContent: 'center',
-          flex: 1,
-          alignItems: 'center',
-          backgroundColor: '#fff',
-        }}>
-        <ActivityIndicator color={Colors.primary} size="large" />
-        <Text style={{color: '#333'}}>Уншиж байна...</Text>
-      </View>
+      <Lottie
+        autoPlay
+        loop
+        style={{ flex: 1, justifyContent: 'center' }}
+        source={require('../../assets/lottie/loading.json')}
+      />
     );
   }
   return (
@@ -180,9 +177,12 @@ const Index = props => {
           ListFooterComponent={renderFooter}
         />
       ) : (
-        <Text style={{color: Colors.text, textAlign: 'center', marginTop: 10}}>
-          Илэрц олдсонгүй
-        </Text>
+        <Lottie
+          autoPlay
+          loop
+          style={{ flex: 1, justifyContent: 'center' }}
+          source={require('../../assets/lottie/loading.json')}
+        />
       )}
     </View>
   );

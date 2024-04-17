@@ -5,13 +5,12 @@ import {
   Image,
   Alert,
   ScrollView,
-  ActivityIndicator,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useEffect, useState, useContext} from 'react';
 import styles from '../rule/style';
 import localApi from '../../api/localApi';
-import {Colors} from '../../components/global/Colors';
+import Lottie from 'lottie-react-native';
 import {AuthContext} from '../../context/AuthContext';
 
 const RestockList = props => {
@@ -74,7 +73,12 @@ const RestockList = props => {
             </TouchableOpacity>
           ))
         ) : (
-          <ActivityIndicator color={Colors.primary} size={'large'} />
+          <Lottie
+            autoPlay
+            loop
+            style={{ flex: 1, justifyContent: 'center' }}
+            source={require('../../assets/lottie/loading.json')}
+          />
         )}
       </ScrollView>
     </View>

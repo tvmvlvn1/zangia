@@ -18,7 +18,7 @@ const LoaderScreen = () => {
           width: 150,
           height: 150,
         }}
-        source={require('../../../assets/lottie/LoaderJson.json')}
+        source={require('../../../assets/lottie/loading.json')}
       />
     </View>
   );

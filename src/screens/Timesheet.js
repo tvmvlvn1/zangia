@@ -4,19 +4,17 @@ import {
   Alert,
   Text,
   StyleSheet,
-  ActivityIndicator,
-  FlatList,
   RefreshControl,
   ScrollView,
-  Modal,
-  Pressable,
 } from 'react-native';
+import Lottie from 'lottie-react-native';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import localApi from '../api/localApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Colors} from '../components/global/Colors';
 import {AuthContext} from '../context/AuthContext';
 import Header from '../components/Header';
+import BottomSheet from '../components/bottom';
 
 const TimeSheetScreen = props => {
   const {navigation} = props;
@@ -52,13 +50,12 @@ const TimeSheetScreen = props => {
   const [markedDatesText, setMarkedDatesText] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
   const [inTime, setInTime] = useState(null);
   const [outTime, setOutTime] = useState(null);
   const [desc, setDesc] = useState(null);
-  const [currentColor, setCurrentColor] = useState(null);
   const [dateText, setDateText] = useState('black');
   const [monthDetails, setMonthDetails] = useState([]);
+  const [status, setStatus] = useState(false);
 
   useEffect(() => {
     let date = new Date();
@@ -174,9 +171,8 @@ const TimeSheetScreen = props => {
       var intime = new Date(obj[day]['detailTime']['intime']);
       var outtime = new Date(obj[day]['detailTime']['outtime']);
       var desc = obj[day]['desc'];
-      var color = obj[day]['color'];
 
-      setModalVisible(true);
+      setStatus(true)
       setInTime(
         addZero(intime.getHours()) + ':' + addZero(intime.getMinutes()),
       );
@@ -190,55 +186,23 @@ const TimeSheetScreen = props => {
         setOutTime(null);
       }
       setDesc(desc);
-      setCurrentColor(color);
       setDateText(day);
     }
   };
 
   if (isLoading) {
     return (
-      <View
-        style={{
-          justifyContent: 'center',
-          flex: 1,
-          alignItems: 'center',
-          backgroundColor: '#fff',
-        }}>
-        <ActivityIndicator color={Colors.primary} size="large" />
-        <Text style={{color: '#333'}}>Уншиж байна...</Text>
-      </View>
+      <Lottie
+        autoPlay
+        loop
+        style={{ flex: 1, justifyContent: 'center' }}
+        source={require('../assets/lottie/loading.json')}
+      />
     );
   }
   return (
     <View style={styles.container}>
       <Header name={"Ирцийн мэдээлэл"} navigation={navigation}/>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalTitle}>
-              Цагийн дэлгэрэнгүй - {dateText}
-            </Text>
-            <Text style={[styles.timeText, {color: currentColor}]}>
-              Төлөв: {desc}
-            </Text>
-            <Text style={styles.timeText}>Ирсэн цаг: {inTime}</Text>
-            {outTime && (
-              <Text style={styles.timeText}>Явсан цаг: {outTime}</Text>
-            )}
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Хаах</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
@@ -246,19 +210,23 @@ const TimeSheetScreen = props => {
         }>
         <Calendar
           current={currentDate}
-          // disableArrowRight={true}
           enableSwipeMonths={true}
           markedDates={markedDatesText}
           renderArrow={direction =>
             direction == 'right' ? (
-              <Text style={{color: '#666', fontSize: 14}}>Дараах сар</Text>
+              <Text style={{color: '#666', fontSize: 14, fontFamily: "Montserrat-Medium"}}>Дараах сар</Text>
             ) : (
-              <Text style={{color: '#666', fontSize: 14}}>Өмнөх сар</Text>
+              <Text style={{color: '#666', fontSize: 14, fontFamily: "Montserrat-Medium"}}>Өмнөх сар</Text>
             )
           }
           onDayPress={day => {
             showDetail(day.dateString);
           }}
+          theme={{
+            textDayFontFamily: 'Montserrat-Medium',
+            textMonthFontFamily: 'Montserrat-Medium',
+            textDayHeaderFontFamily: 'Montserrat-Medium',
+          }}    
           markingType={'period'}
           onMonthChange={month => {
             showTTime(month.dateString, month.year, month.month);
@@ -289,7 +257,7 @@ const TimeSheetScreen = props => {
                       paddingHorizontal: 5,
                     }}></View>
 
-                  <Text style={{color: Colors.text, marginHorizontal: 5}}>
+                  <Text style={{color: Colors.text, marginHorizontal: 5, fontFamily: "Montserrat-Medium"}}>
                     {object.col2}: {Math.floor(object.col3 / 60)} цаг{' '}
                     {object.col3 % 60} мин
                   </Text>
@@ -298,6 +266,7 @@ const TimeSheetScreen = props => {
             }
           })}
       </ScrollView>
+      { status && <BottomSheet setStatus={ setStatus } dateText={dateText} desc={desc} inTime={inTime} outTime={outTime} /> }
     </View>
   );
 };
@@ -353,7 +322,7 @@ const styles = StyleSheet.create({
   textStyle: {
     color: 'white',
     fontWeight: 'bold',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   modalTitle: {
     marginBottom: 15,
@@ -362,6 +331,6 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   timeText: {
-    color: '#333',
+    color: '#333'
   },
 });
