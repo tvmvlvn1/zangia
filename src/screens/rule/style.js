@@ -26,6 +26,7 @@ export default StyleSheet.create({
     fontSize: 12,
     color: '#666',
     width: '100%',
+    fontFamily: "Montserrat-Medium"
   },
   itemInfo: {
     marginTop: 0,
@@ -38,7 +39,7 @@ export default StyleSheet.create({
     width: '90%',
     fontSize: 14,
     color: '#444',
-    fontWeight: 'bold',
+    fontFamily: "Montserrat-SemiBold"
   },
   itemInfoImage: {
     width: '10%',

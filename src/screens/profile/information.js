@@ -163,11 +163,11 @@ const Information = ({ user, navigation }) => {
           <TouchableOpacity onPress={() => navigation.navigate('SalaryStack')} style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
-                source={require("../../assets/images/income.png")}
+                source={require("../../assets/images/clock.png")}
                 style={{ width: 25, height: 25 }}
               />
               <Text style={{ marginLeft: 8, fontFamily: "Montserrat-Regular", color: "#63575A" }}>
-                Цалингийн мэдээ
+                Чөлөөний хүсэлт
               </Text>
             </View>
             <SimpleLineIcons

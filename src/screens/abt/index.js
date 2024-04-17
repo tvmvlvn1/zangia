@@ -10,9 +10,9 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './abtstyle.js';
 import localApi from '../../api/localApi';
-import {Colors} from '../../components/global/Colors.js';
 import {AuthContext} from '../../context/AuthContext.js';
 import Lottie from 'lottie-react-native';
+import Header from '../../components/Header.js'
 
 const Index = props => {
   const {navigation} = props;
@@ -57,7 +57,7 @@ const Index = props => {
   };
 
   const AbtView = item => {
-    navigation.navigate('AbtViewStack', {id: item.id, name: item.title, user});
+    navigation.navigate('AbtViewStack', {id: item.id, name: item.jobname, user});
   };
 
   const renderItem = ({item}) => (
@@ -97,6 +97,7 @@ const Index = props => {
   }
   return (
     <View style={[styles.container]}>
+      <Header name={"Ажлын байрны тодорхойлолт"} navigation={navigation}/>
       <FlatList
         data={data}
         renderItem={renderItem}

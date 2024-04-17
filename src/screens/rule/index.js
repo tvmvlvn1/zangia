@@ -16,6 +16,7 @@ import {AuthContext} from '../../context/AuthContext.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useIsFocused} from '@react-navigation/native';
 import Lottie from "lottie-react-native";
+import Header from '../../components/Header.js'
 
 const Index = props => {
   const {navigation} = props;
@@ -162,6 +163,7 @@ const Index = props => {
   }
   return (
     <View style={{backgroundColor: Colors.background, flex: 1}}>
+      <Header name={"Дүрэм, журам, стандарт"} navigation={navigation}/>
       {data.length > 0 ? (
         <FlatList
           data={data}

@@ -2,7 +2,8 @@ import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
   container: {
-    backgroundColor: '#f2f2f2',
+    flex: 1,
+    backgroundColor: '#fff',
   },
   item: {
     marginTop: 10,
@@ -26,6 +27,7 @@ export default StyleSheet.create({
     fontSize: 12,
     color: '#666',
     width: '100%',
+    fontFamily: "Montserrat-Medium"
   },
   itemInfo: {
     marginTop: 0,
@@ -38,7 +40,7 @@ export default StyleSheet.create({
     width: '90%',
     fontSize: 14,
     color: '#444',
-    fontWeight: 'bold',
+    fontFamily: "Montserrat-SemiBold"
   },
   itemInfoImage: {
     width: '10%',

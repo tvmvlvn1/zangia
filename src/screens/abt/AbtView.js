@@ -4,7 +4,7 @@ import {config} from '../../Global';
 import {View} from 'react-native';
 import Lottie from 'lottie-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Colors} from '../../components/global/Colors';
+import Header from '../../components/Header.js'
 
 const RuleView = props => {
   const [visible, setVisible] = useState(true);
@@ -18,6 +18,7 @@ const RuleView = props => {
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
+      <Header name={props.route.params.name} navigation={props.navigation}/>
       {visible && (
         <Lottie
           autoPlay
