@@ -12,6 +12,8 @@ import {GetAddress} from '../restService/address';
 import {GetProvidences} from '../restService/props';
 import LoaderScreen from '../props/LoaderScreen';
 import Editaddress from './editaddress';
+import LinearGradient from 'react-native-linear-gradient';
+import Header from '../../../components/Header.js';
 
 const Address = ({navigation}) => {
   const [data, setData] = useState([]);
@@ -90,7 +92,7 @@ const Address = ({navigation}) => {
 
   return (
     <View style={{backgroundColor: '#fff', flex: 1}}>
-      {/* <StatusBar barStyle="dark-content" animated={true} /> */}
+      <Header name={"Хаягийн мэдээлэл"} navigation={navigation}/>
       {page === 'IndexPage' ? (
         <>
           {loading ? (
@@ -103,37 +105,47 @@ const Address = ({navigation}) => {
               refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
               }>
-              <Text style={styles.listItemBigTitle}>Гэрийн хаяг</Text>
-              <View style={styles.addressShowContainer}>
-                <View style={[styles.flex1, styles.pr10]}>
-                  <Text style={styles.addressShowField}>Аймаг / Дүүрэг</Text>
-                  <Text style={styles.addressShowInput}>{NowProvidence}</Text>
+              <View style={{ flex: 1, justifyContent: "space-between" }}>
+                <View>
+                  <Text style={styles.listItemBigTitle}>Гэрийн хаяг</Text>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", padding: 15, backgroundColor: "#F7F8F8", borderRadius: 16, marginBottom: 10 }}>
+                    <Text style={{ fontFamily: "Montserrat-Medium", color: "#000" }}>
+                      Аймаг / Дүүрэг
+                    </Text>
+                    <Text style={{ fontFamily: "Montserrat-Medium", color: "#000" }}>
+                      {NowProvidence}
+                    </Text>
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", padding: 15, backgroundColor: "#F7F8F8", borderRadius: 16, marginBottom: 10 }}>
+                    <Text style={{ fontFamily: "Montserrat-Medium", color: "#000" }}>
+                      Сум / Хороо
+                    </Text>
+                    <Text style={{ fontFamily: "Montserrat-Medium", color: "#000" }}>
+                      {NowSoum}{NowSoum.length < 3 && ` хороо`}
+                    </Text>
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", padding: 15, backgroundColor: "#F7F8F8", borderRadius: 16 }}>
+                    <Text style={{ fontFamily: "Montserrat-Medium", color: "#000" }}>
+                      Тоот
+                    </Text>
+                    <Text style={{ fontFamily: "Montserrat-Medium", color: "#000" }}>
+                      {data?.toot}
+                    </Text>
+                  </View>
                 </View>
-                <View style={styles.flex1}>
-                  <Text style={styles.addressShowField}>Сум / Хороо</Text>
-                  <Text style={styles.addressShowInput}>
-                    {NowSoum}
-                    {NowSoum.length < 3 && ` хороо`}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.addressShowContainer}>
-                <View style={[styles.flex1, styles.pr10]}>
-                  <Text style={styles.addressShowField}>Тоот</Text>
-                  <Text
-                    style={[
-                      styles.addressShowInput,
-                      styles.addressShowAddress,
-                    ]}>
-                    {data?.toot}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.addressShowContainer}>
-                <TouchableOpacity
-                  style={styles.addressEditButton}
-                  onPress={() => setPage('EditPage')}>
-                  <Text style={styles.addressEditButtonTitle}>Засварлах</Text>
+
+                <TouchableOpacity 
+                  style={{ backgroundColor: "#fff", borderRadius: 99, alignItems: "center", marginTop: "10%" }} 
+                  // onPress={() => setPage('EditPage')}
+                >
+                  <LinearGradient
+                      colors={[ '#92A3FD', '#9DCEFF' ]}
+                      style={{ width: "100%", padding: 20, borderRadius: 99, alignItems: "center", flexDirection: "row", justifyContent: "center" }}
+                  > 
+                      <Text style={{ fontFamily: "Montserrat-Bold", color: '#fff', textTransform: "uppercase" }}>
+                          Засварлах
+                      </Text>
+                  </LinearGradient>
                 </TouchableOpacity>
               </View>
             </ScrollView>

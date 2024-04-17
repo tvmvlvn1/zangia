@@ -269,18 +269,18 @@ export default StyleSheet.create({
   listitemorecontainer: {},
   listItemTitle: {
     fontSize: 15,
-    fontWeight: 'bold',
+    fontFamily: "Montserrat-Medium",
     color: '#666',
   },
   listItemSubtitle: {
     fontSize: 13,
     color: 'rgba(118, 118, 118, 1)',
-    fontWeight: '500',
+    fontFamily: "Montserrat-Medium",
     marginTop: 3,
   },
   listItemBigTitle: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: "Montserrat-SemiBold",
     padding: 12,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
@@ -297,6 +297,7 @@ export default StyleSheet.create({
   },
   smallContainer: {
     padding: 20,
+    paddingTop: 0
   },
   pageheader: {},
   pagetitle: {
@@ -330,6 +331,7 @@ export default StyleSheet.create({
   addressShowField: {
     fontSize: 13,
     color: '#000',
+    fontFamily: "Montserrat-Medium",
   },
   addressShowAddress: {
     fontWeight: 'normal',

@@ -22,10 +22,11 @@ const ListRelation = ({data, navigation, setPage, setPerson}) => {
         </View>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => {
-          setPage('ShowDetial');
-          setPerson(data);
-        }}>
+        // onPress={() => {
+        //   setPage('ShowDetial');
+        //   setPerson(data);
+        // }}
+      >
         <MIcon
           name={'keyboard-arrow-right'}
           style={[styles.iconstyle, {color: '#3b5998'}]}
@@ -59,11 +60,12 @@ const styles = StyleSheet.create({
   },
   personname: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: "Montserrat-Medium",
     color: '#333',
   },
   persontitle: {
     fontSize: 13,
     color: '#15640C',
+    fontFamily: "Montserrat-Medium",
   },
 });

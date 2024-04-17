@@ -94,12 +94,12 @@ const styles = StyleSheet.create({
   },
   schoolname: {
     fontSize: 18,
-    fontWeight: '700',
+    fontFamily: "Montserrat-SemiBold",
   },
   subname: {
     fontSize: 16,
     marginTop: 8,
-    fontWeight: '500',
+    fontFamily: "Montserrat-Medium",
     color: '#525252',
   },
   mini: {

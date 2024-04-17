@@ -12,7 +12,9 @@ import localApi from '../../../api/localApi';
 import Lottie from 'lottie-react-native';
 import {useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LinearGradient from 'react-native-linear-gradient';
 import {AuthContext} from '../../../context/AuthContext';
+import Header from '../../../components/Header.js'
 
 const Index = props => {
   const {navigation, user} = props;
@@ -59,6 +61,7 @@ const Index = props => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+      <Header name={"Гарын үсэг"} navigation={navigation}/>
       {loader ? (
         <Lottie
           autoPlay
@@ -85,6 +88,7 @@ const Index = props => {
                   color: '#000',
                   width: '90%',
                   alignSelf: 'center',
+                  fontFamily: "Montserrat-SemiBold"
                 }}>
                 Танд одоогоор бүртгэлтэй гарын үсэг байхгүй байна
               </Text>
@@ -97,6 +101,7 @@ const Index = props => {
                   color: '#000',
                   textAlign: 'left',
                   padding: 15,
+                  fontFamily: "Montserrat-SemiBold"
                 }}>
                 Таны одоогийн гарын үсэг
               </Text>
@@ -125,19 +130,16 @@ const Index = props => {
               alignSelf: 'center',
               width: '100%',
             }}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('RegisterSignatureStack')}
-              style={{
-                backgroundColor: '#3b5998',
-                width: '90%',
-                alignSelf: 'center',
-                padding: 10,
-                borderRadius: 10,
-              }}>
-              <Text style={{color: '#fff', fontSize: 17, alignSelf: 'center'}}>
-                Шинэ бүртгэл үүсгэх
-              </Text>
-            </TouchableOpacity>
+            <TouchableOpacity style={{ backgroundColor: "#fff", borderRadius: 99, alignItems: "center", marginHorizontal: 20 }} onPress={() => navigation.navigate('RegisterSignatureStack')}>
+              <LinearGradient
+                  colors={[ '#92A3FD', '#9DCEFF' ]}
+                  style={{ width: "100%", padding: 20, borderRadius: 99, alignItems: "center", flexDirection: "row", justifyContent: "center" }}
+              > 
+                  <Text style={{ fontFamily: "Montserrat-Bold", color: '#fff', textTransform: "uppercase" }}>
+                    Шинэ бүртгэл үүсгэх
+                  </Text>
+              </LinearGradient>
+          </TouchableOpacity>
           </View>
         </>
       )}

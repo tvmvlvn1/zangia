@@ -5,14 +5,16 @@ import {
   View,
   SafeAreaView,
   Image,
-  Alert,
   ScrollView,
 } from 'react-native';
 import Lottie from 'lottie-react-native';
 import localApi from '../../../api/localApi';
 import SignatureCapture from 'react-native-signature-capture';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LinearGradient from 'react-native-linear-gradient';
+import { ALERT_TYPE, Dialog, Toast } from 'react-native-alert-notification';
 import {AuthContext} from '../../../context/AuthContext';
+import Header from '../../../components/Header.js'
 
 const RegisterSignature = props => {
   const {navigation} = props;
@@ -56,23 +58,16 @@ const RegisterSignature = props => {
   };
 
   const alertMessage = text => {
-    Alert.alert(
-      'Анхааруулах мессэж',
-      `Та ${
+    Dialog.show({
+      type: ALERT_TYPE.WARNING,
+      title: 'Анхааруулах мессэж',
+      textBody: `Та ${
         text == 'first' ? 'Эхний' : text == 'second' ? 'Хоёрдохь' : 'Сүүлийн'
       } гарын үсгийг илгээхдээ итгэлтэй байна уу`,
-      [
-        {
-          text: 'Үгүй',
-          // onPress: () => console.log('Үгүй Pressed'),
-          style: 'cancel',
-        },
-        {
-          text: 'Илгээх',
-          onPress: () => sendSignature(text),
-        },
-      ],
-    );
+      button: 'Тийм',
+      onPressButton: () => sendSignature(text),
+      textBodyStyle: { fontFamily: "Montserrat-Bold" }
+  })
   };
 
   const warningMessage = value => {
@@ -95,18 +90,32 @@ const RegisterSignature = props => {
         })
         .then(response => {
           if (response.data.code == '200') {
-            Alert.alert('Амжилттай илгээгдлээ');
+            Toast.show({
+              type: ALERT_TYPE.SUCCESS,
+              textBody: `Амжилттай илгээгдлээ`,
+              textBodyStyle: { fontFamily: "Montserrat-Bold" }
+            })
             navigation.goBack();
             setLoader(false);
           } else if (response.data.code == '303') {
             logout();
           } else {
-            Alert.alert('Алдаа гарлаа.', response.data.message);
+            Toast.show({
+              type: ALERT_TYPE.DANGER,
+              title: 'Алдаа гарлаа !!!',
+              textBody: `${response.data.message}`,
+              textBodyStyle: { fontFamily: "Montserrat-Bold" }
+            })
             setLoader(false);
           }
         })
         .catch(error => {
-          Alert.alert('Алдаа гарлаа.', error.message);
+          Toast.show({
+            type: ALERT_TYPE.DANGER,
+            title: 'Алдаа гарлаа !!!',
+            textBody: `${error.message}`,
+            textBodyStyle: { fontFamily: "Montserrat-Bold" }
+          })
         });
     } catch (e) {
       console.log('ERROR FOR UPDATING SIGNATURE---------->', e);
@@ -115,6 +124,7 @@ const RegisterSignature = props => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+      <Header name={"Гарын үсэг"} navigation={navigation}/>
       {loader ? (
         <Lottie
           autoPlay
@@ -139,7 +149,7 @@ const RegisterSignature = props => {
                 padding: 10,
                 color: '#000',
                 fontSize: 16,
-                fontWeight: 500,
+                fontFamily: "Montserrat-SemiBold",
               }}>
               Хадгалагдсан гарын үсэг
             </Text>
@@ -248,49 +258,62 @@ const RegisterSignature = props => {
               flexDirection: 'row',
             }}>
             {thirdImage ? (
-              <TouchableOpacity
-                onPress={() => {
-                  setThirdImage('');
-                  setSecondImage('');
-                  setFirstImage('');
-                }}
-                style={{
-                  width: '45%',
-                  padding: 10,
-                  backgroundColor: '#3b5998',
-                  borderRadius: 15,
-                }}>
-                <Text
-                  style={{color: '#fff', textAlign: 'center', fontSize: 16}}>
-                  Бүгдийг арилгах
-                </Text>
+              <TouchableOpacity 
+                  onPress={() => {
+                    setThirdImage('');
+                    setSecondImage('');
+                    setFirstImage('');
+                  }}
+                  style={{
+                    width: '45%',
+                    padding: 10,
+                    borderRadius: 15,
+                  }}
+                >
+                  <LinearGradient
+                      colors={[ '#92A3FD', '#9DCEFF' ]}
+                      style={{ width: "100%", padding: 20, borderRadius: 99, alignItems: "center", flexDirection: "row", justifyContent: "center" }}
+                  > 
+                      <Text style={{ fontFamily: "Montserrat-Bold", color: '#fff', textTransform: "uppercase" }}>
+                        Арилгах
+                      </Text>
+                  </LinearGradient>
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity
+              <TouchableOpacity 
                 onPress={resetSignature}
                 style={{
                   width: '45%',
                   padding: 10,
-                  backgroundColor: '#3b5998',
                   borderRadius: 15,
-                }}>
-                <Text
-                  style={{color: '#fff', textAlign: 'center', fontSize: 16}}>
-                  Арилгах
-                </Text>
-              </TouchableOpacity>
+                }}
+              >
+                <LinearGradient
+                    colors={[ '#92A3FD', '#9DCEFF' ]}
+                    style={{ width: "100%", padding: 20, borderRadius: 99, alignItems: "center", flexDirection: "row", justifyContent: "center" }}
+                > 
+                    <Text style={{ fontFamily: "Montserrat-Bold", color: '#fff', textTransform: "uppercase" }}>
+                      Арилгах
+                    </Text>
+                </LinearGradient>
+            </TouchableOpacity>
             )}
-            <TouchableOpacity
-              onPress={saveSignature}
-              style={{
-                width: '45%',
-                padding: 10,
-                backgroundColor: '#3b5998',
-                borderRadius: 15,
-              }}>
-              <Text style={{color: '#fff', textAlign: 'center', fontSize: 16}}>
-                Хадгалах
-              </Text>
+            <TouchableOpacity 
+                onPress={saveSignature}
+                style={{
+                  width: '45%',
+                  padding: 10,
+                  borderRadius: 15,
+                }}
+              >
+                <LinearGradient
+                    colors={[ '#92A3FD', '#9DCEFF' ]}
+                    style={{ width: "100%", padding: 20, borderRadius: 99, alignItems: "center", flexDirection: "row", justifyContent: "center" }}
+                > 
+                    <Text style={{ fontFamily: "Montserrat-Bold", color: '#fff', textTransform: "uppercase" }}>
+                    Хадгалах
+                    </Text>
+                </LinearGradient>
             </TouchableOpacity>
           </View>
         </View>

@@ -59,6 +59,7 @@ import TimeSheetScreen from '../../screens/Timesheet';
 import SalaryScreen from '../../screens/salary';
 import CompScreen from '../../screens/comp';
 import DetailCompScreen from '../../screens/comp/detail';
+import GeneralInfoStack from "../../screens/profile/general"
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createStackNavigator()
@@ -138,6 +139,10 @@ const HomeStackScreen = () => (
       />
 
       {/* Ажилтны мэдээлэл */}
+      <HomeStack.Screen
+        name="GeneralInfoStack"
+        component={GeneralInfoStack}
+      />
       <HomeStack.Screen
         name="UserProfileStack"
         component={Profile}

@@ -10,8 +10,6 @@ import Eicon from 'react-native-vector-icons/Entypo';
 import Aicon from 'react-native-vector-icons/AntDesign';
 import styles from './../profile';
 import {GetResult} from '../restService/self';
-import ClearPhone from './clearphone';
-import ClearEmmergency from './clearemmergency';
 import Success from './../props/success';
 import Loader from '../props/LoaderScreen';
 import EditPrivatePhone from './editprivatephone';
@@ -19,6 +17,7 @@ import EditEmmergency from './editprivatedata';
 import Improve from './../props/improve';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import EditIBD from './editibd';
+import Header from '../../../components/Header.js';
 
 const Self = ({navigation}) => {
   const [loader, setLoader] = useState(true);
@@ -63,6 +62,7 @@ const Self = ({navigation}) => {
 
   return (
     <View style={{backgroundColor: '#fff', flex: 1}}>
+      <Header name={"Хувийн мэдээлэл"} navigation={navigation}/>
       {page === 'ListPage' ? (
         <>
           {isDeleted ? (

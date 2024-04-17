@@ -15,6 +15,7 @@ import Loader from '../props/LoaderScreen';
 import ShowFamilyMember from './showFamilyMember';
 import EditFamilyMember from './editFamily';
 import AddFamilyMember from './addFamily';
+import Header from '../../../components/Header.js';
 
 const Family = ({navigation}) => {
   const [isLoading, setIsloading] = useState(0);
@@ -55,6 +56,7 @@ const Family = ({navigation}) => {
 
   return (
     <View style={styles.bigcontainer}>
+      <Header name={"Гэр бүлийн гишүүд"} navigation={navigation}/>
       {page === 'ListPage' ? (
         <>
           <View style={[styles.mt20, styles.p20]}>
@@ -147,10 +149,11 @@ const styles = StyleSheet.create({
   },
   tabtitletext: {
     color: '#3b5998',
-    fontWeight: '700',
+    fontFamily: "Montserrat-SemiBold",
     fontSize: 18,
   },
   p20: {
     padding: 20,
+    paddingTop: 0
   },
 });

@@ -5,6 +5,7 @@ import {GetResult} from '../restService/self';
 import Loader from '../props/LoaderScreen';
 import ListSchool from './../props/listschool';
 import Dots from './../props/dots';
+import Header from '../../../components/Header.js';
 
 const Education = ({navigation}) => {
   const [loader, setLoader] = useState(true);
@@ -41,6 +42,7 @@ const Education = ({navigation}) => {
 
   return (
     <View style={styles.bigcontainer}>
+      <Header name={"Боловсрол"} navigation={navigation}/>
       <ScrollView
         style={styles.listContainer}
         refreshControl={
