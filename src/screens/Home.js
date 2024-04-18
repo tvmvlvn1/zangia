@@ -141,7 +141,7 @@ const HomeScreen = props => {
             colors={[ '#9CCBFF', '#9DCEFF' ]}
             style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
           >
-            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('TimeSheetStack')}>
+            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('CalendarStack')}>
               <Image
                 source={require("../assets/images/calendar1.png")}
                 style={{ width: 55, height: 55 }}

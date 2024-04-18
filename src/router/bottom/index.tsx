@@ -60,6 +60,7 @@ import SalaryScreen from '../../screens/salary';
 import CompScreen from '../../screens/comp';
 import DetailCompScreen from '../../screens/comp/detail';
 import GeneralInfoStack from "../../screens/profile/general"
+import CalendarStack from "../../screens/calendar"
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createStackNavigator()
@@ -76,9 +77,15 @@ const HomeStackScreen = () => (
         name="HomeStack"
         component={HomeScreen}
       />
+
       <HomeStack.Screen
         name="TimeSheetStack"
         component={TimeSheetScreen}
+      />
+
+      <HomeStack.Screen
+        name="CalendarStack"
+        component={CalendarStack}
       />
 
       <HomeStack.Screen

@@ -7,7 +7,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Header from '../../components/Header';
 import localApi from '../../api/localApi';
-import axios from "axios";
 
 const Index = (props) => {
     const { navigation } = props
@@ -23,7 +22,7 @@ const Index = (props) => {
         await AsyncStorage.getItem("userInfo").then(async (res) => {
             let user = JSON.parse(res);
 
-            await axios.post("http://192.168.90.124:8000/service/getCompetitions", JSON.stringify({
+            await localApi.post("getCompetitions", JSON.stringify({
                 "emp_id": user?.emp_id
               })).then((res) => {
                 if(res.data.data.length > 0) {
