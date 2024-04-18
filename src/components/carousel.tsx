@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { View, Image, Text, TouchableOpacity } from "react-native";
+import { View, Image, Text, TouchableOpacity, Dimensions  } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
@@ -12,6 +12,10 @@ interface Event {
     eventname: string;
     images: string[];
 }
+
+const { width: deviceWidth } = Dimensions.get('window');
+const marginHorizontal = 20;
+const adjustedWidth = deviceWidth - (2 * marginHorizontal);
 
 function Index({ navigation }: any) {
     const [events, setEvents] = useState<Event[]>([]);
@@ -44,13 +48,13 @@ function Index({ navigation }: any) {
     const { logout } = useContext(AuthContext);
     const baseOptions = {
         vertical: false as const,
-        width: 375,
+        width: adjustedWidth,
         height: 330
     };
     const baseOptionsSli = {
         vertical: false as const,
-        width: 375,
-        height: 120
+        width: adjustedWidth,
+        height: 130
     };
 
     useEffect(() => {

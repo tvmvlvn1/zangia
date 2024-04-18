@@ -46,7 +46,7 @@ import AddressScreen from '../../screens/profile/edit/address';
 //Absence Request
 import Absence from '../../screens/absence/index';
 import AbsenceDetail from '../../screens/absence/detail';
-import CreateAbsenceRequest from '../../screens/absence/createRequest';
+import CreateAbsenceRequest from '../../screens/absence/create';
 
 // Position router
 import Position from '../../screens/position';
