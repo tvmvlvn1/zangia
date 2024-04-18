@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Header from '../../components/Header';
 import localApi from '../../api/localApi';
+import axios from "axios";
 
 const Index = (props) => {
     const { navigation } = props
@@ -22,7 +23,7 @@ const Index = (props) => {
         await AsyncStorage.getItem("userInfo").then(async (res) => {
             let user = JSON.parse(res);
 
-            await localApi.post("getCompetitions", JSON.stringify({
+            await axios.post("http://192.168.90.124:8000/service/getCompetitions", JSON.stringify({
                 "emp_id": user?.emp_id
               })).then((res) => {
                 if(res.data.data.length > 0) {
@@ -77,8 +78,8 @@ const Index = (props) => {
                                     style={{ width: 38, height: 38 }}
                                 />
                                 <View style={{ marginLeft: 10 }}>
-                                    <Text style={{ fontFamily: "Montserrat-Medium", fontSize: 12 }}>{item[0]?.competition_name?.description}</Text>
-                                    <Text style={{ fontFamily: "Montserrat-SemiBold", color: "#1D1617", fontSize: 16 }}>{item[0]?.competition_name?.name}</Text>
+                                    <Text style={{ fontFamily: "Montserrat-Medium", fontSize: 12 }}>{item?.competition?.description}</Text>
+                                    <Text style={{ fontFamily: "Montserrat-SemiBold", color: "#1D1617", fontSize: 16 }}>{item?.competition.name}</Text>
                                 </View>
                             </View>
                             <TouchableOpacity onPress={() => navigation.navigate("DetailCompScreen", {datas: item})}>

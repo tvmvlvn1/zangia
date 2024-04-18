@@ -109,7 +109,7 @@ const Information = ({ user, navigation, isEnabled, setIsEnabled, toggleSwitch }
             />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate('AddressStack')} style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
+          <TouchableOpacity onPress={() => navigation.navigate('AddressStack', {navigation, user})} style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
                 source={require("../../assets/images/location.png")}
@@ -117,6 +117,23 @@ const Information = ({ user, navigation, isEnabled, setIsEnabled, toggleSwitch }
               />
               <Text style={{ marginLeft: 11, fontFamily: "Montserrat-Regular", color: "#63575A" }}>
                 Хаягийн мэдээлэл
+              </Text>
+            </View>
+            <SimpleLineIcons
+              name='arrow-right'
+              size={14}
+              color={'#63575A'}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate('SignatureStack')} style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                source={require("../../assets/images/agreement.png")}
+                style={{ width: 25, height: 25 }}
+              />
+              <Text style={{ marginLeft: 8, fontFamily: "Montserrat-Regular", color: "#63575A" }}>
+                Гарын үсэг
               </Text>
             </View>
             <SimpleLineIcons
@@ -160,93 +177,6 @@ const Information = ({ user, navigation, isEnabled, setIsEnabled, toggleSwitch }
               ios_backgroundColor="#3e3e3e"
               onValueChange={toggleSwitch}
               value={isEnabled}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View 
-        style={{
-          elevation: 2, 
-          shadowColor: "#1D1617",
-          shadowOffset: { width: 0, height: 1 },
-          shadowOpacity: 0.5, 
-          backgroundColor: '#fff', 
-          padding: 20, 
-          borderRadius: 16,
-          marginTop: "5%",
-          paddingBottom: 5
-        }}
-      >
-        <Text style={{ color: "#000", fontFamily: "Montserrat-Bold", marginBottom: 5, fontSize: 16 }}>
-          Бусад
-        </Text>
-        <View style={{ padding: 5 }}>
-          <TouchableOpacity onPress={() => navigation.navigate('RuleStack')} style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image
-                source={require("../../assets/images/cyber-security.png")}
-                style={{ width: 25, height: 25 }}
-              />
-              <Text style={{ marginLeft: 8, fontFamily: "Montserrat-Regular", color: "#63575A" }}>
-                Дүрэм, журам стандарт
-              </Text>
-            </View>
-            <SimpleLineIcons
-              name='arrow-right'
-              size={14}
-              color={'#63575A'}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate('AbtStack')} style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image
-                source={require("../../assets/images/shield.png")}
-                style={{ width: 25, height: 25 }}
-              />
-              <Text style={{ marginLeft: 8, fontFamily: "Montserrat-Regular", color: "#63575A" }}>
-                Ажлын байрны тодорхойлолт
-              </Text>
-            </View>
-            <SimpleLineIcons
-              name='arrow-right'
-              size={14}
-              color={'#63575A'}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate('SalaryStack')} style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image
-                source={require("../../assets/images/clock.png")}
-                style={{ width: 25, height: 25 }}
-              />
-              <Text style={{ marginLeft: 8, fontFamily: "Montserrat-Regular", color: "#63575A" }}>
-                Чөлөөний хүсэлт
-              </Text>
-            </View>
-            <SimpleLineIcons
-              name='arrow-right'
-              size={14}
-              color={'#63575A'}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate('SignatureStack')} style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15, alignItems: "center" }}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image
-                source={require("../../assets/images/agreement.png")}
-                style={{ width: 25, height: 25 }}
-              />
-              <Text style={{ marginLeft: 8, fontFamily: "Montserrat-Regular", color: "#63575A" }}>
-                Гарын үсэг
-              </Text>
-            </View>
-            <SimpleLineIcons
-              name='arrow-right'
-              size={14}
-              color={'#63575A'}
             />
           </TouchableOpacity>
         </View>

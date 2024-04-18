@@ -97,7 +97,7 @@ const Index = props => {
             <View>
               <Text
                 style={{
-                  fontSize: 19,
+                  fontSize: 14,
                   color: '#000',
                   textAlign: 'left',
                   padding: 15,

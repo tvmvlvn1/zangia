@@ -73,53 +73,19 @@ const HomeScreen = props => {
       </View>
       <ScrollView style={{ marginBottom: "2%" }}>
         {/* categories */}
-        <View style={{ alignItems: "center" }}>
-          <LinearGradient 
-            colors={[ '#9CCBFF', '#9DCEFF' ]}
-            style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "90%", alignItems: "center", borderRadius: 20 }}
-          >
-            <View>
-              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
-                Цагийн мэдээ
-              </Text>
-              <View style={{ marginLeft: 3 }}>
-                <Text style={{ fontFamily: "Montserrat-Regular", color: "#fff" }}>
-                  Ажилтны ирцийн мэдээлэл
-                </Text>
-                <TouchableOpacity style={{ alignItems: "center", marginTop: 10 }} onPress={() => navigation.navigate('TimeSheetStack')}>
-                  <LinearGradient
-                      colors={[ '#98B9FE', '#98BCFE' ]}
-                      style={{ width: "100%", borderRadius: 50, alignItems: "center", flexDirection: "row", justifyContent: "center", padding: 7 }}
-                  >   
-                    <Text style={{ fontFamily: "Montserrat-Bold", color: '#fff' }}>
-                      Зочлох
-                    </Text>
-                  </LinearGradient>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <View>
-              <Image
-                source={require("../assets/images/calendar.png")}
-                style={{ width: 70, height: 70 }}
-              />
-            </View>
-          </LinearGradient>
-        </View>
-
+        <Carousel navigation={navigation}/>
         <View style={{ alignItems: "center", marginTop: 10, flexDirection: "row", justifyContent: "space-between", marginLeft: 20, marginRight: 20 }}>
           <LinearGradient 
             colors={[ '#9CCBFF', '#9DCEFF' ]}
             style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
           >
-            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('UserProfileStack')}>
+            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('JobPosition')}>
               <Image
-                source={require("../assets/images/userIco.png")}
+                source={require("../assets/images/job-offer.png")}
                 style={{ width: 55, height: 55 }}
               />
-              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
-                Хувийн мэдээлэл
+              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff", textAlign: "center" }}>
+                Нээлттэй ажлын байр
               </Text>
             </TouchableOpacity>
           </LinearGradient>
@@ -133,8 +99,8 @@ const HomeScreen = props => {
                 source={require("../assets/images/3d-contact.png")}
                 style={{ width: 55, height: 55 }}
               />
-              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
-                Утасны жагсаалт
+              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff", textAlign: "center" }}>
+                Ажилчдын утасны жагсаалт
               </Text>
             </TouchableOpacity>
           </LinearGradient>
@@ -159,13 +125,13 @@ const HomeScreen = props => {
             colors={[ '#9CCBFF', '#9DCEFF' ]}
             style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
           >
-            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('JobPosition')}>
+            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('CompScreen')}>
               <Image
-                source={require("../assets/images/job-offer.png")}
+                source={require("../assets/images/competition.png")}
                 style={{ width: 55, height: 55 }}
               />
               <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
-                Ажлын байр
+                Тэмцээн
               </Text>
             </TouchableOpacity>
           </LinearGradient>
@@ -190,19 +156,17 @@ const HomeScreen = props => {
             colors={[ '#9CCBFF', '#9DCEFF' ]}
             style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
           >
-            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('CompScreen')}>
+            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('AbsenceRequest')}>
               <Image
-                source={require("../assets/images/competition.png")}
+                source={require("../assets/images/absence.png")}
                 style={{ width: 55, height: 55 }}
               />
               <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
-                Тэмцээн
+                Чөлөө
               </Text>
             </TouchableOpacity>
           </LinearGradient>
         </View>
-        {/* event */}
-        <Carousel/>
       </ScrollView>
     </SafeAreaView>
   );

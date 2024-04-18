@@ -9,7 +9,6 @@ import {
   Dimensions,
   TouchableOpacity,
   Platform,
-  Button,
 } from 'react-native';
 import {Colors} from '../../components/global/Colors';
 import QRCodeScanner from 'react-native-qrcode-scanner';
@@ -17,7 +16,7 @@ import {PERMISSIONS, check, request} from 'react-native-permissions';
 import Geolocation from '@react-native-community/geolocation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../api/index';
-import {HeaderBackButton} from '@react-navigation/elements';
+import Header from '../../components/Header.js';
 import {isLocationEnabled} from 'react-native-device-info';
 
 const QrScreen = props => {
@@ -284,35 +283,13 @@ const QrScreen = props => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Header name={"Цаг бүртгэл"} navigation={navigation}/>
       {viewFocused && (
         <QRCodeScanner
           reactivateTimeout={3000}
           reactivate={true}
           showMarker={true}
           customMarker={customMarker()}
-          bottomViewStyle={{
-            padding: 20,
-            height: '100%',
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'rgba(255,255,255,0.7)',
-          }}
-          bottomContent={
-            <Text
-              style={{
-                color: '#1660AB',
-                textAlign: 'center',
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                textTransform: 'uppercase',
-                fontFamily: "Montserrat-Medium"
-              }}
-            >
-              QR уншуулах
-            </Text>
-          }
           topViewStyle={{padding: 10, flex: 1, height: '100%'}}
           ref={node => {
             return node;

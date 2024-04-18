@@ -195,7 +195,7 @@ const TimeSheetScreen = props => {
       <Lottie
         autoPlay
         loop
-        style={{ flex: 1, justifyContent: 'center' }}
+        style={{ flex: 1, justifyContent: 'center', backgroundColor: "#fff" }}
         source={require('../assets/lottie/loading.json')}
       />
     );
@@ -274,7 +274,10 @@ const TimeSheetScreen = props => {
 export default TimeSheetScreen;
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: '#fff'},
+  container: {
+    flex: 1, 
+    backgroundColor: '#fff'
+  },
   item: {
     paddingVertical: 5,
     marginHorizontal: 10,

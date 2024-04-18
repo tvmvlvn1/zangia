@@ -11,9 +11,11 @@ import React, {useEffect, useState, useContext} from 'react';
 import styles from '../rule/style';
 import localApi from '../../api/localApi';
 import Lottie from 'lottie-react-native';
+import Header from '../../components/Header.js';
 import {AuthContext} from '../../context/AuthContext';
 
 const RestockList = props => {
+  const {navigation} = props;
   const {logout} = useContext(AuthContext);
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +52,8 @@ const RestockList = props => {
   }, []);
 
   return (
-    <View>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
+      <Header name={"Дэлгүүрийн өрөлт"} navigation={navigation}/>
       <ScrollView>
         {!isLoading && data ? (
           data.map((item, i) => (

@@ -8,11 +8,11 @@ const Index = ({ name, navigation }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <SimpleLineIcons
             name='arrow-left'
-            size={14}
+            size={18}
             color={'#1D1617'}
           />
         </TouchableOpacity>
-        <Text style={{ fontFamily: "Montserrat-Bold", color: "#000", fontSize: 16, textAlign: 'center', width: "95%" }}>
+        <Text style={{ fontFamily: "Montserrat-Bold", color: "#000", fontSize: 18, textAlign: 'center', width: "90%" }}>
           {name}
         </Text>
       </View>

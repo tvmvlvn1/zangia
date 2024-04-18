@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { View, Image, Text, TouchableOpacity } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LinearGradient from 'react-native-linear-gradient';
 
 import localApi from '../api/localApi';
 import { AuthContext } from '../context/AuthContext';
@@ -12,13 +13,44 @@ interface Event {
     images: string[];
 }
 
-function Index() {
+function Index({ navigation }: any) {
     const [events, setEvents] = useState<Event[]>([]);
+    const navigations = [
+        {
+            "name": "Цагийн мэдээ",
+            "desc": "Ажилтны ирцийн мэдээлэл",
+            "navi": "TimeSheetStack",
+            "image": require("../assets/images/calendar.png")
+        },
+        {
+            "name": "Дотоод журам",
+            "desc": "Дүрэм, журам, стандарт",
+            "navi": "RuleStack",
+            "image": require("../assets/images/guarantee.png")
+        },
+        {
+            "name": "Тодорхойлолт",
+            "desc": "Ажлын байрны тодорхойлолт",
+            "navi": "AbtStack",
+            "image": require("../assets/images/jobT.png")
+        },
+        {
+            "name": "Өрөлт",
+            "desc": "Дэлгүүрийн өрөлт",
+            "navi": "RestockStack",
+            "image": require("../assets/images/biotechnology.png")
+        },
+    ]
     const { logout } = useContext(AuthContext);
     const baseOptions = {
         vertical: false as const,
-        width: 355,
+        width: 375,
         height: 330
+    };
+    const baseOptionsSli = {
+        vertical: false as const,
+        width: 375,
+        height: 120
     };
 
     useEffect(() => {
@@ -78,7 +110,7 @@ function Index() {
     };         
       
     return (
-        <View style={{ flex: 1, margin: "5%" }}>
+        <View style={{ flex: 1, marginHorizontal: 10 }}>
             { events && events.length > 0 &&
                 <>
                     <Text style={{ fontFamily: "Montserrat-SemiBold", fontSize: 16, color: "#000", marginBottom: 5 }}>
@@ -87,7 +119,7 @@ function Index() {
                     <Carousel
                         {...baseOptions}
                         loop={false}
-                        style={{ width: "100%", justifyContent: "center" }}
+                        style={{ width: "100%", justifyContent: "center", marginBottom: 10 }}
                         autoPlay={false}
                         autoPlayInterval={1000}
                         data={events}
@@ -106,6 +138,52 @@ function Index() {
                     />
                 </>
             }
+            <Carousel
+                {...baseOptionsSli}
+                loop={false}
+                style={{ width: "100%", justifyContent: "center" }}
+                autoPlay={false}
+                autoPlayInterval={1000}
+                data={navigations}
+                pagingEnabled={true}
+                onSnapToItem={(index) => console.log("current index:", index)}
+                renderItem={({item}) => (
+                    <View style={{ alignItems: "center", marginRight: 5  }}>
+                        <LinearGradient 
+                            colors={[ '#9CCBFF', '#9DCEFF' ]}
+                            style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "100%", alignItems: "center", borderRadius: 20 }}
+                        >
+                            <View>
+                                <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
+                                    {item.name}
+                                </Text>
+                                <View style={{ marginLeft: 3 }}>
+                                    <Text style={{ fontFamily: "Montserrat-Regular", color: "#fff" }}>
+                                        {item.desc}
+                                    </Text>
+                                    <TouchableOpacity style={{ alignItems: "center", marginTop: 10 }} onPress={() => navigation.navigate(item.navi)}>
+                                        <LinearGradient
+                                            colors={[ '#98B9FE', '#98BCFE' ]}
+                                            style={{ width: "100%", borderRadius: 50, alignItems: "center", flexDirection: "row", justifyContent: "center", padding: 7 }}
+                                        >   
+                                            <Text style={{ fontFamily: "Montserrat-Bold", color: '#fff' }}>
+                                                Зочлох
+                                            </Text>
+                                        </LinearGradient>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+
+                            <View>
+                                <Image
+                                    source={item.image}
+                                    style={{ width: 70, height: 70 }}
+                                />
+                            </View>
+                        </LinearGradient>
+                    </View>
+                )}
+            />
         </View>
     );
 }

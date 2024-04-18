@@ -1,12 +1,14 @@
 import {Text, View, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
+import Header from '../../components/Header.js';
 import styles from '../rule/style';
 
 const Index = props => {
   const {navigation} = props;
 
   return (
-    <View>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
+      <Header name={"Дэлгүүрийн өрөлт"} navigation={navigation}/>
       <TouchableOpacity
         onPress={() => navigation.navigate('RestockListStack', {is_food: 1})}
         style={styles.item}>

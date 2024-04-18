@@ -101,12 +101,11 @@ const Index = ({navigation}) => {
               ListFooterComponent={renderFooter}
             />
           ) : (
-            <Lottie
-              autoPlay
-              loop
-              style={{ flex: 1, justifyContent: 'center' }}
-              source={require('../../assets/lottie/loading.json')}
-            />
+            <View style={{ flex: .7, justifyContent: "center" }}>
+              <Text style={{ textAlign: "center", fontSize: 16, width: "80%", alignSelf: "center", fontFamily: "Montserrat-SemiBold", color: "#000" }}>
+                Одоогоор зарлагдсан ажлын байр байхгүй байна шүү
+              </Text>
+            </View>
           )}
         </>
       ) : (

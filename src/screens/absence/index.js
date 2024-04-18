@@ -11,10 +11,11 @@ import Lottie from 'lottie-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './asbencestyle.js';
 import api from '../../api/localApi.js';
-import {Colors} from '../../components/global/Colors.js';
 import moment from 'moment';
 import {useIsFocused} from '@react-navigation/native';
 import {AuthContext} from '../../context/AuthContext.js';
+import Header from '../../components/Header.js';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Index = props => {
   const {navigation} = props;
@@ -144,6 +145,7 @@ const Index = props => {
 
   return (
     <View style={styles.container}>
+      <Header name={"Чөлөөний хүсэлт"} navigation={navigation}/>
       <FlatList
         data={data}
         renderItem={renderItem}
@@ -153,29 +155,15 @@ const Index = props => {
         maxToRenderPerBatch={5}
         windowSize={5}
       />
-      <TouchableOpacity
-        onPress={() => navigation.navigate('CreateAbsence', {user: user})}
-        style={{
-          width: 45,
-          height: 45,
-          borderRadius: 50,
-          backgroundColor: '#0858A3',
-          alignItems: 'center',
-          justifyContent: 'center',
-          bottom: 10,
-          position: 'absolute',
-          right: 10,
-        }}>
-        <Text
-          style={{
-            fontSize: 30,
-            fontWeight: 'bold',
-            color: 'white',
-            alignSelf: 'center',
-            marginBottom: 4,
-          }}>
-          +
-        </Text>
+      <TouchableOpacity style={{ backgroundColor: "#fff", borderRadius: 99, alignItems: "center", bottom: 60, position: "absolute", width: "90%", alignSelf: "center" }} onPress={() => navigation.navigate('CreateAbsence', {user: user})}>
+        <LinearGradient
+          colors={[ '#92A3FD', '#9DCEFF' ]}
+          style={{ width: "100%", padding: 20, borderRadius: 99, alignItems: "center", flexDirection: "row", justifyContent: "center" }}
+        >   
+          <Text style={{ fontFamily: "Montserrat-Bold", color: '#fff', textTransform: "uppercase" }}>
+            Шинэ хүсэлт
+          </Text>
+        </LinearGradient>
       </TouchableOpacity>
     </View>
   );
