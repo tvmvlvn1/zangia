@@ -59,12 +59,12 @@ const BottomSheet = ({ setStatus, isReverse, data, navigation }) => {
                     
                     setTimeout(() => {
                         navigation.goBack();
-                    }, 2000);
+                    }, 1000);
                 } else {
                     Toast.show({
                         type: ALERT_TYPE.WARNING,
                         title: 'Алдаа гарлаа !!!',
-                        textBody: `${res.data?.message}`,
+                        textBody: `${res.data.data.msg}`,
                         textBodyStyle: { fontFamily: "Montserrat-Bold" }
                     })
                     
@@ -106,12 +106,12 @@ const BottomSheet = ({ setStatus, isReverse, data, navigation }) => {
                         
                         setTimeout(() => {
                             navigation.goBack();
-                        }, 2000);
+                        }, 1000);
                     } else {
                         Toast.show({
                             type: ALERT_TYPE.WARNING,
                             title: 'Алдаа гарлаа !!!',
-                            textBody: `${res.data?.message}`,
+                            textBody: `${res.data.data.msg}`,
                             textBodyStyle: { fontFamily: "Montserrat-Bold" }
                         })
                     }

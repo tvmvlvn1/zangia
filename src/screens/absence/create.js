@@ -137,10 +137,9 @@ const Detail = (props) => {
                 type_selection: type,
                 type_selection_for_paid_leaves: paidType,
                 description: reason,
-                date_from: formattedDate + " " + timeFormatter.format(timeDate) + ":00",
-                date_to: endFormattedDate + " " + timeFormatter.format(eneTimeDate) + ":00",
+                date_from: formattedDate + " " + timeFormatter.format(timeDate),
+                date_to: endFormattedDate + " " + timeFormatter.format(eneTimeDate),
             })).then((res) => {
-                console.log(res.data);
                 if (res.data?.data?.result == 'success') {
                     Toast.show({
                         type: ALERT_TYPE.SUCCESS,
@@ -151,12 +150,12 @@ const Detail = (props) => {
                     
                     setTimeout(() => {
                         navigation.goBack();
-                    }, 2000);
+                    }, 1000);
                   } else {
                     Toast.show({
                         type: ALERT_TYPE.WARNING,
                         title: 'Алдаа гарлаа !!!',
-                        textBody: `${res.data.message}`,
+                        textBody: `${res.data.data.msg}`,
                         textBodyStyle: { fontFamily: "Montserrat-Bold" }
                     })
                   }

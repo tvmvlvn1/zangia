@@ -80,6 +80,22 @@ const Index = props => {
                   style={{ width: 40, height: 40 }}
                 />
                 <View style={{ marginLeft: 10 }}>
+                  <View style={{ flexDirection: "row" }}>
+                    <Text style={{
+                      fontSize: 10,
+                      color: '#2e5fa6',
+                      fontFamily: "Montserrat-Medium"
+                    }}>
+                      {item.date_from} - 
+                    </Text>
+                    <Text style={{
+                      fontSize: 10,
+                      color: '#dd4e42',
+                      fontFamily: "Montserrat-Medium"
+                    }}>
+                      {" "}{item.date_to}
+                    </Text>
+                  </View>
                   <Text style={{ fontFamily: "Montserrat-Medium", fontSize: 12 }}>
                     {
                       item.type_selection == 'unpaid_leave'
@@ -92,9 +108,6 @@ const Index = props => {
                         ? 'Ковид 19 өвчний чөлөө'
                         : item.type_selection == 'annualleave_request' && 'Ээлжийн амралт'
                     }
-                  </Text>
-                  <Text style={{ fontFamily: "Montserrat-Medium", fontSize: 12 }}>
-                    Шалтгаан ~ {item.name.length > 19 ? `${item.name.slice(0, 19)}...` : item.name}
                   </Text>
                   <Text style={{ fontFamily: "Montserrat-SemiBold", color: "#1D1617", fontSize: 14 }}>
                     {
