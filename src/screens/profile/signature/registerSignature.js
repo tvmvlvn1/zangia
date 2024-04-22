@@ -6,13 +6,14 @@ import {
   SafeAreaView,
   Image,
   ScrollView,
+  Alert
 } from 'react-native';
 import Lottie from 'lottie-react-native';
 import localApi from '../../../api/localApi';
 import SignatureCapture from 'react-native-signature-capture';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
-import { ALERT_TYPE, Dialog, Toast } from 'react-native-alert-notification';
+import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import {AuthContext} from '../../../context/AuthContext';
 import Header from '../../../components/Header.js'
 
@@ -58,16 +59,16 @@ const RegisterSignature = props => {
   };
 
   const alertMessage = text => {
-    Dialog.show({
-      type: ALERT_TYPE.WARNING,
-      title: 'Анхааруулах мессэж',
-      textBody: `Та ${
+    Alert.alert('Анхааруулах мессэж', `Та ${
         text == 'first' ? 'Эхний' : text == 'second' ? 'Хоёрдохь' : 'Сүүлийн'
-      } гарын үсгийг илгээхдээ итгэлтэй байна уу`,
-      button: 'Тийм',
-      onPressButton: () => sendSignature(text),
-      textBodyStyle: { fontFamily: "Montserrat-Bold" }
-  })
+      } гарын үсгийг илгээхдээ итгэлтэй байна уу`, [
+        {
+        text: 'Цуцлах',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+        },
+        {text: 'Тийм', onPress: () => sendSignature(text)},
+    ]);
   };
 
   const warningMessage = value => {

@@ -1,12 +1,12 @@
 import React, { useCallback, useState, useMemo } from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image, Alert } from "react-native";
 import { DatePickerModal, TimePickerModal } from 'react-native-paper-dates'
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 import Lottie from 'lottie-react-native';
 import { Fumi } from 'react-native-textinput-effects';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient';
-import { ALERT_TYPE, Toast, Dialog } from 'react-native-alert-notification';
+import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Header from '../../components/Header.js';
@@ -108,14 +108,14 @@ const Detail = (props) => {
                 textBodyStyle: { fontFamily: "Montserrat-Bold" }
             })
         } else {
-          Dialog.show({
-            type: ALERT_TYPE.WARNING,
-            title: 'Чөлөөний хүсэлт',
-            textBody: 'Чөлөөний хүсэлт илгээхдээ итгэлтэй байна уу?',
-            button: 'Тийм',
-            onPressButton: () => sendNewAbsenceReq(),
-            textBodyStyle: { fontFamily: "Montserrat-Bold" }
-        })
+            Alert.alert('Чөлөөний хүсэлт', 'Чөлөөний хүсэлт илгээхдээ итгэлтэй байна уу?', [
+                {
+                text: 'Цуцлах',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+                },
+                {text: 'Тийм', onPress: () => sendNewAbsenceReq()},
+            ]);
         }
     };
 
@@ -155,7 +155,7 @@ const Detail = (props) => {
                     Toast.show({
                         type: ALERT_TYPE.WARNING,
                         title: 'Алдаа гарлаа !!!',
-                        textBody: `${res.data.data.msg}`,
+                        textBody: `${res.data.data.msg ? res.data.data.msg : res.data.message}`,
                         textBodyStyle: { fontFamily: "Montserrat-Bold" }
                     })
                   }
