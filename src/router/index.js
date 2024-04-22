@@ -139,7 +139,7 @@ const Navigation = ({navigation}) => {
         provider: 'playStore', // for Android
       }).then(latestVersion => {
         if (VersionCheck.getCurrentVersion() < latestVersion) {
-          // showAlert();
+          showAlert();
         }
       });
     } else {
