@@ -1,24 +1,18 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   TouchableOpacity,
-  Platform,
   SafeAreaView,
   Text,
   View,
   Image,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import localApi from '../api/localApi';
-import {getUniqueId, getModel} from 'react-native-device-info';
-import VersionCheck from 'react-native-version-check';
 import {AuthContext} from '../context/AuthContext';
-import { ALERT_TYPE, Dialog, Toast } from 'react-native-alert-notification';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import localApi from '../api/localApi';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import AntDesignIcons from "react-native-vector-icons/AntDesign"
-import IoniconsIcons from "react-native-vector-icons/Ionicons"
-import FeatherIcons from "react-native-vector-icons/Feather"
-import { Fumi  } from 'react-native-textinput-effects';
+import {Fumi} from 'react-native-textinput-effects';
 import LinearGradient from 'react-native-linear-gradient';
 import Lottie from 'lottie-react-native'
 
@@ -26,23 +20,7 @@ const LoginScreen = (props) => {
   const {navigation} = props;
   const {login} = useContext(AuthContext);
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [uniqueId, setUniqueId] = useState('');
-  const [saveLoginInfo, setSaveLoginInfo] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isShow, setIsShow] = useState(false);
-
-  useEffect(() => {
-    getUniqueId().then(data => setUniqueId(data));
-    fetchData();
-
-    const unsubscribe = navigation.addListener('focus', () => {
-      fetchData();
-    });
-    return function cleanup() {
-      unsubscribe();
-    };
-  }, []);
 
   const getGreeting = () => {
     const currentHour = new Date().getHours();
@@ -56,173 +34,41 @@ const LoginScreen = (props) => {
     }
   };
 
-  const fetchData = async () => {
-    let loginData = await AsyncStorage.getItem('loginInfo');
-    let loginUserData = await JSON.parse(loginData);
-    if (loginUserData !== null) {
-      setSaveLoginInfo(loginUserData.saveLoginInfo || false);
-      setUsername(loginUserData.username);
-      setPassword(loginUserData.password);
-    }
-  };
-
   const signIn = async () => {
-    if(!username != '' && !password != '') {
-        Toast.show({
-            type: ALERT_TYPE.WARNING,
-            title: 'Алдаа гарлаа !!!',
-            textBody: 'Та хурууны код, нууц үгээ оруулдгаа мартчихсан юм биш биз ?',
-            textBodyStyle: { fontFamily: "Montserrat-Bold" }
-        })
-    } else if (!username != '') {
-        Toast.show({
-            type: ALERT_TYPE.WARNING,
-            title: 'Алдаа гарлаа !!!',
-            textBody: 'Та хурууны кодоо бичихээ мартчихсан юм биш биз ?',
-            textBodyStyle: { fontFamily: "Montserrat-Bold" }
-        })
-    } else if(!password != '') {
-        Toast.show({
-            type: ALERT_TYPE.WARNING,
-            title: 'Алдаа гарлаа !!!',
-            textBody: 'Та нууц үгээ бичихээ мартчихсан юм биш биз ?',
-            textBodyStyle: { fontFamily: "Montserrat-Bold" }
-        })
+    if (!username != '') {
+      Toast.show({
+          type: ALERT_TYPE.WARNING,
+          title: 'Алдаа гарлаа !!!',
+          textBody: 'Та нэвтрэх нэрээ бичихээ мартчихсан юм биш биз ?',
+          textBodyStyle: { fontFamily: "Montserrat-Bold" }
+      })
     } else {
       setIsLoading(true);
-      
-      localApi
-        .post('auth', {
-          username,
-          password,
-          platform: Platform.OS,
-          version: VersionCheck.getCurrentVersion(),
-        })
-        .then(res => {
-          if (res.data.code == '200') {
-            setIsLoading(false);
-            if (res.data.imei_check == 'CHECK') {
-              if (res.data.imei != null) {
-                if (uniqueId == res.data.imei) {
-                  loginAuthenticated(res.data);
-                } else {
-                    Dialog.show({
-                        type: ALERT_TYPE.DANGER,
-                        title: 'Алдааны мэдээлэл',
-                        textBody: 'Та энэ утаснаас нэвтрэх эрхгүй байна. Өөр утсаар нэвтрэх хүсэлтэй байгаа бол Erp-аар хүсэлтээ илгээнэ үү !',
-                        button: 'Хаах',
-                        textBodyStyle: { fontFamily: "Montserrat-Bold" }
-                    })
-                }
-              } else {
-                showAlert(getModel(), res.data);
-              }
-            } else if (res.data.imei_check == 'UNCHECK') {
-              loginAuthenticated(res.data);
-            } else {
-                Dialog.show({
-                    type: ALERT_TYPE.DANGER,
-                    title: 'Алдааны мэдээлэл',
-                    textBody: 'Та нэвтрэх тохиргоо хийгдээгүй байна !',
-                    button: 'Хаах',
-                    textBodyStyle: { fontFamily: "Montserrat-Bold" }
-                })
-            }
-          } else if (res.data.code == '401') {
-            setIsLoading(false);
-            Dialog.show({
-                type: ALERT_TYPE.DANGER,
-                title: 'Алдааны мэдээлэл',
-                textBody: `${res.data.message}`,
-                button: 'Хаах',
-                textBodyStyle: { fontFamily: "Montserrat-Bold" }
-            })
-          } else {
-            setIsLoading(false);
-            Dialog.show({
-                type: ALERT_TYPE.DANGER,
-                title: 'Алдааны мэдээлэл',
-                textBody: 'Нэвтрэх нэр эсвэл нууц үг буруу байна !',
-                button: 'Хаах',
-                textBodyStyle: { fontFamily: "Montserrat-Bold" }
-            })
-          }
-        })
-        .catch(error => {
-            Dialog.show({
-                type: ALERT_TYPE.DANGER,
-                title: 'Алдааны мэдээлэл',
-                textBody: `${error.message}`,
-                button: 'Хаах',
-                textBodyStyle: { fontFamily: "Montserrat-Bold" }
-            })
-          setIsLoading(false);
-        });
-    }
-  };
-
-  const showAlert = (model, responseData) => {
-    return Dialog.show({
-        type: ALERT_TYPE.SUCCESS,
-        title: 'Нэвтрэх тохиргоо',
-        textBody: `Цаашид ${model} төхөөрөмжөөр нэвтрэх үү ?`,
-        button: 'Тийм',
-        onPressButton: () => showLoginAlert(responseData, true, model),
-        textBodyStyle: { fontFamily: "Montserrat-Bold" }
-    })
-  };
-
-  const showLoginAlert = (responseData, isLogin, model) => {
-    return Dialog.show({
-        type: ALERT_TYPE.SUCCESS,
-        title: 'Нэвтрэх тохиргоо',
-        textBody: `Цаашид ${model} төхөөрөмжөөр нэвтрэхийг зөвшөөрч байна.`,
-        button: 'Зөвшөөрөх',
-        onPressButton: () => loginAuthenticated(responseData, isLogin),
-        textBodyStyle: { fontFamily: "Montserrat-Bold" }
-    })
-  };
-
-  const setImeiCode = responseData => {
-    localApi
-      .post('changeImei', {
-        imei: uniqueId,
-        empid: responseData.emp_id,
-        jwt: responseData.jwt,
-      })
-      .then(res => {
-        Toast.show({
+      localApi.get(`api/user-permissions?filters[username][$eq]=${username}`).then((res) => {
+        if (res.data.data.length > 0) {
+          loginAuthenticated(res.data.data[0])
+        } else {
+          Toast.show({
             type: ALERT_TYPE.WARNING,
-            title: 'Мэдэгдэл',
-            textBody: `${res.data.message}`,
+            title: 'Алдаа гарлаа',
+            textBody: 'Та системд бүртгэлгүй байна !!!',
             textBodyStyle: { fontFamily: "Montserrat-Bold" }
-        })
+          })
+        }
+      }).catch(error => {
+          console.error("Error fetching user data:", error);
+      }).finally(() => {
+        setIsLoading(false);
       })
-      .catch(err => {
-        Toast.show({
-            type: ALERT_TYPE.WARNING,
-            title: 'Алдаа гарлаа !!!',
-            textBody: `${err.message}`,
-            textBodyStyle: { fontFamily: "Montserrat-Bold" }
-        })
-      });
+    }
   };
 
-  const loginAuthenticated = async (responseData, isFirst = false) => {
-    if (isFirst) {
-      setImeiCode(responseData);
-    }
-    await AsyncStorage.setItem('userInfo', JSON.stringify(responseData));
-    if (saveLoginInfo) {
-      let obj = {};
-      obj.username = username;
-      obj.password = password;
-      obj.saveLoginInfo = saveLoginInfo;
-      await AsyncStorage.setItem('loginInfo', JSON.stringify(obj));
-    } else {
-      AsyncStorage.removeItem('loginInfo');
-    }
-    login(responseData.jwt);
+  const loginAuthenticated = async (responseData) => {
+    await AsyncStorage.setItem('userInfo', JSON.stringify(responseData)).then(() => {
+      login("userFound");
+    }).catch((e) => {
+      console.log(e, "<---------------- ERROR FOR AsyncStorage Login Function");
+    })
   };
 
   return (
@@ -239,15 +85,15 @@ const LoginScreen = (props) => {
                 <View>
                     <View style={{ alignItems: "center", marginTop: "5%" }}>
                         <Text style={{ fontFamily: "Montserrat-Medium", fontSize: 18, color: "#000" }}>
-                            {getGreeting()}
+                          {getGreeting()}
                         </Text>
                         <Text style={{ fontFamily: "Montserrat-Bold", fontSize: 22, color: "#000" }}>
-                            Тавтай морилно уу
+                          Тавтай морилно уу
                         </Text>
                     </View>
                     <View style={{ margin: 20 }}>
                       <Fumi
-                        placeholder='Хурууны код'
+                        placeholder='Нэвтрэх нэр'
                         iconClass={FontAwesomeIcon}
                         iconName={'user-o'}
                         iconColor={'#97B6FE'}
@@ -259,34 +105,11 @@ const LoginScreen = (props) => {
                         inputStyle={{ fontFamily: "Montserrat-Medium", color: "#000", marginBottom: 13, fontSize: 15 }}
                         style={{ backgroundColor: "#F7F8F8", borderRadius: 14, fontFamily: "Montserrat-Medium" }}
                       />
-                      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
-                        <Fumi
-                          placeholder='Нууц үг'
-                          iconClass={SimpleLineIcons}
-                          iconName={'lock'}
-                          iconColor={'#97B6FE'}
-                          iconSize={20}
-                          iconWidth={40}
-                          inputPadding={16}
-                          secureTextEntry={isShow ? false : true}
-                          value={password}
-                          onChangeText={(text) => setPassword(text)}
-                          inputStyle={{ fontFamily: "Montserrat-Medium", color: "#000", marginBottom: 13, fontSize: 15 }}
-                          style={{ backgroundColor: "#F7F8F8", borderRadius: 14, fontFamily: "Montserrat-Medium", marginTop: 10, width: "80%" }}
-                        />
-                        <TouchableOpacity style={{ backgroundColor: "#F7F8F8", padding: 20, marginTop: 10, borderRadius: 20 }} onPress={() => setIsShow(!isShow)}>
-                          <IoniconsIcons
-                            name={isShow ? "eye-outline" : 'eye-off-outline'}
-                            color={"#000"}
-                            size={20}
-                          />
-                        </TouchableOpacity>
-                      </View>
                     </View>
                     <View style={{ alignItems: "flex-end", marginRight: 5 }}>
                         <TouchableOpacity>
-                            <Text style={{ fontFamily: "Montserrat-SemiBold", fontSize: 14, color: "#ADA4A5" }} onPress={() => { navigation.navigate('Forget') }}>
-                                Нууц үгээ мартсан уу ?
+                            <Text style={{ fontFamily: "Montserrat-SemiBold", fontSize: 14, color: "#ADA4A5" }} onPress={() => {navigation.navigate('Forget')}}>
+                                Нэвтрэх нэрээ мартсан уу ?
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -320,17 +143,13 @@ const LoginScreen = (props) => {
                         <View style={{ height: 1, backgroundColor: "#DDDADA", width: "45%" }}/>
                     </View>
 
-                    <TouchableOpacity onPress={() => setSaveLoginInfo(!saveLoginInfo)}>
+                    <TouchableOpacity onPress={() => {
+                      loginAuthenticated("GUEST")
+                    }}>
                         <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 5 }}>
-                            <FeatherIcons
-                              name='check-circle'
-                              color={saveLoginInfo ? "#000" : "#ADA4A5"}
-                              size={20}
-                              style={{ marginRight: 5 }}
-                            />
-                            <Text style={{ fontFamily: "Montserrat-Medium", color: saveLoginInfo ? "#000" : '#ADA4A5' }}>
-                                {saveLoginInfo ? "Нэвтрэх нэр үгийг нь хадгалчихсан шүү" : "Нэвтрэх нэр үгээ сануулах уу ?"}
-                            </Text>
+                          <Text style={{ fontFamily: "Montserrat-Medium", color: "#000" }}>
+                            Login as guest
+                          </Text>
                         </View>
                     </TouchableOpacity>
                 </View>

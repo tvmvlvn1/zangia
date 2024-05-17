@@ -1,26 +1,38 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext, useRef} from 'react';
 import {
   View,
   Text,
-  Image,
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  Image,
+  StyleSheet,
 } from 'react-native';
 import localApi from '../api/localApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import EvilIconsIcons from "react-native-vector-icons/EvilIcons";
-import LinearGradient from 'react-native-linear-gradient';
-import Carousel from '../components/carousel';
+import AntDesign from "react-native-vector-icons/AntDesign";
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+import {AuthContext} from '../context/AuthContext';
+import Lottie from 'lottie-react-native';
+import { useIsFocused } from '@react-navigation/native';
 
 const HomeScreen = props => {
   const {navigation} = props;
-  const [user, setUser] = useState({})
-  const [lotteryType, setLotteryType] = useState(0);
+  const isFocused = useIsFocused();
+  const [userData, setUserData] = useState({});
+  const [page, setPage] = useState(1)
+  const {logout} = useContext(AuthContext);
+  const [productDatas, setProductDatas] = useState([])
+  const [totalPages, setToatalPages] = useState(0)
+  const [isLoading, setIsLoading] = useState(false);
+  const scrollViewRef = useRef(null);
+
+  const handlePageChange = (pageNumber) => {
+    setPage(pageNumber);
+  };
 
   const getGreeting = () => {
     const currentHour = new Date().getHours();
-
     if (currentHour < 12) {
         return 'Өглөөний мэнд,';
     } else if (currentHour >= 12 && currentHour < 17.) {
@@ -31,25 +43,51 @@ const HomeScreen = props => {
   };
 
   useEffect(() => {
-    checkLottery();
-  }, []);
+    getUserData();
+    getProductDatas();
+  }, [page, totalPages, isFocused]);  
 
-  const checkLottery = async () => {
-    await AsyncStorage.getItem('userInfo').then(userInfo => {
-      let user = JSON.parse(userInfo);
-      setUser(user)
-      localApi
-        .post('checkLottery', {jwt: user.jwt})
-        .then(res => {
-          console.log(res.data);
-          if (res.data.data) {
-            setLotteryType(res.data.data);
-          }
-        })
-        .catch(err => {});
-    });
-  };
+  const getUserData = async () => {
+    await AsyncStorage.getItem("userInfo").then((res) => {
+      if(res) {
+        const parsedData = JSON.parse(res);
+        setUserData(parsedData);
+      } else {
+        logout();
+      }
+    }).catch((e) => {
+      console.log(e, "user not found --->", e);
+      logout();
+    })
+  }
 
+  const getProductDatas = async () => {
+    setIsLoading(true)
+    localApi.get(`api/products?populate=product_image&pagination[page]=${page}&pagination[pageSize]=10&sort[updatedAt]=DESC`)
+    .then((res) => {
+      if(res.data.data.length > 0) {
+        setProductDatas(res.data.data)
+        setToatalPages(res.data.meta.pagination.pageCount);
+      } else {
+        setProductDatas([])
+      }
+    }).catch((e) => {
+      console.log(e);
+    }).finally(() => {
+      setIsLoading(false)
+    })
+  }
+
+  if (isLoading) {
+    return (
+      <Lottie
+        autoPlay
+        loop
+        style={{flex: 1, justifyContent: 'center', backgroundColor: "#fff"}}
+        source={require('../assets/lottie/loading.json')}
+      />
+    );
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       {/* header */}
@@ -59,116 +97,94 @@ const HomeScreen = props => {
             {getGreeting()}
           </Text>
           <Text style={{ fontFamily: "Montserrat-Bold", fontSize: 20, color: "#000", marginLeft: 4 }}>
-            {user.name} .{user.lname}
+            {userData?.attributes?.username || "Guest view"}
           </Text>
         </View>
-        <TouchableOpacity>
-          <EvilIconsIcons
-            name={'bell'}
-            color={"#000"}
-            size={30}
-            style={{ marginRight: 5, backgroundColor: "#F7F8F8", padding: 5, borderRadius: 10 }}
-          />
-        </TouchableOpacity>
+        {userData?.attributes?.is_admin &&
+          <TouchableOpacity onPress={() => {
+            navigation.navigate("AddNewProduct")
+          }}>
+            <AntDesign
+              name={'addfile'}
+              color={"#000"}
+              size={20}
+              style={{ marginRight: 5, backgroundColor: "#F7F8F8", padding: 10, borderRadius: 10 }}
+            />
+          </TouchableOpacity>
+        }
       </View>
-      <ScrollView style={{ marginBottom: "2%" }}>
-        {/* categories */}
-        <Carousel navigation={navigation}/>
-        <View style={{ alignItems: "center", marginTop: 10, flexDirection: "row", justifyContent: "space-between", marginLeft: 20, marginRight: 20 }}>
-          <LinearGradient 
-            colors={[ '#9CCBFF', '#9DCEFF' ]}
-            style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
-          >
-            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('JobPosition')}>
-              <Image
-                source={require("../assets/images/job-offer.png")}
-                style={{ width: 55, height: 55 }}
-              />
-              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff", textAlign: "center" }}>
-                Нээлттэй ажлын байр
-              </Text>
+      {/* list */}
+      <ScrollView style={{ marginBottom: "2%" }} ref={scrollViewRef} scrollEventThrottle={16}>
+        {productDatas?.map((item) => {
+          return (
+            <TouchableOpacity 
+              onPress={() => navigation.navigate("ProductDetail", {data: item})}
+              style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", backgroundColor: "#F7F8F8", marginHorizontal: 20, padding: 10, marginBottom: 5, borderRadius: 13 }}
+            >
+              <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                <View>
+                  <Image
+                    source={{ uri: "https://preview.thenewsmarket.com/Previews/ADID/StillAssets/640x480/651512.jpg" }}
+                    style={{ width: 50, height: 50, borderRadius: 10 }}
+                  />
+                </View>
+                <View style={{ marginLeft: 5 }}>
+                  <Text style={{ fontFamily: "Montserrat-Bold", fontSize: 14, color: "#000" }}>
+                    {item.attributes.name}
+                  </Text>
+                  <Text style={{ fontFamily: "Montserrat-Medium", fontSize: 12, color: "#ADA4A5" }}>
+                    {item.attributes.description}
+                  </Text>
+                </View>
+              </View>
+              <View>
+                <SimpleLineIcons
+                  name={'arrow-right'}
+                  color={"#000"}
+                  size={16}
+                />
+              </View>
             </TouchableOpacity>
-          </LinearGradient>
-
-          <LinearGradient 
-            colors={[ '#9CCBFF', '#9DCEFF' ]}
-            style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
-          >
-            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('PhoneStack')}>
-              <Image
-                source={require("../assets/images/3d-contact.png")}
-                style={{ width: 55, height: 55 }}
-              />
-              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff", textAlign: "center" }}>
-                Ажилчдын утасны жагсаалт
-              </Text>
-            </TouchableOpacity>
-          </LinearGradient>
-        </View>
-        <View style={{ alignItems: "center", marginTop: 10, flexDirection: "row", justifyContent: "space-between", marginLeft: 20, marginRight: 20 }}>
-          <LinearGradient 
-            colors={[ '#9CCBFF', '#9DCEFF' ]}
-            style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
-          >
-            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('SalaryStack')}>
-              <Image
-                source={require("../assets/images/money.png")}
-                style={{ width: 55, height: 55 }}
-              />
-              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
-                Цалин
-              </Text>
-            </TouchableOpacity>
-          </LinearGradient>
-
-          <LinearGradient 
-            colors={[ '#9CCBFF', '#9DCEFF' ]}
-            style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
-          >
-            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('CompScreen')}>
-              <Image
-                source={require("../assets/images/competition.png")}
-                style={{ width: 55, height: 55 }}
-              />
-              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
-                Тэмцээн
-              </Text>
-            </TouchableOpacity>
-          </LinearGradient>
-        </View>
-        <View style={{ alignItems: "center", marginTop: 10, flexDirection: "row", justifyContent: "space-between", marginLeft: 20, marginRight: 20 }}>
-          <LinearGradient 
-            colors={[ '#9CCBFF', '#9DCEFF' ]}
-            style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
-          >
-            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('CalendarStack')}>
-              <Image
-                source={require("../assets/images/calendar1.png")}
-                style={{ width: 55, height: 55 }}
-              />
-              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
-                Календар
-              </Text>
-            </TouchableOpacity>
-          </LinearGradient>
-
-          <LinearGradient 
-            colors={[ '#9CCBFF', '#9DCEFF' ]}
-            style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, width: "49%", alignItems: "center", borderRadius: 20 }}
-          >
-            <TouchableOpacity style={{ alignItems: "center", width: "100%" }} onPress={() => navigation.navigate('AbsenceRequest')}>
-              <Image
-                source={require("../assets/images/absence.png")}
-                style={{ width: 55, height: 55 }}
-              />
-              <Text style={{ fontFamily: "Montserrat-Medium", color: "#fff" }}>
-                Чөлөө
-              </Text>
-            </TouchableOpacity>
-          </LinearGradient>
-        </View>
+          )
+        })}
+        {/* pagination control */}
+        {totalPages > 1 &&
+          <View style={styles.pagination}>
+            {[...Array(totalPages)].map((_, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => handlePageChange(index + 1)}
+                style={[styles.pageIndicator, index === page - 1 && styles.activePage]}
+              >
+                <Text style={{color: index === page - 1 ? "#fff" : '#000'}}>{index + 1}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        }
       </ScrollView>
     </SafeAreaView>
   );
 };
 export default HomeScreen;
+
+const styles = StyleSheet.create({
+  pagination: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    margin: 16,
+  },
+  pageIndicator: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 4,
+  },
+  activePage: {
+    backgroundColor: 'black',
+  }
+});

@@ -2,5 +2,5 @@
 	<string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">6wzx9CQnv1pHnLzgsApBCIUmD7Ge9sgEijH9K</string>
     <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
     <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
-    <string name="app_name">NOMIN Employee</string>
+    <string name="app_name">Temuulen Zangia</string>
 </resources>

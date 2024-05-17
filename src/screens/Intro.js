@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Image,
   TouchableOpacity,
   SafeAreaView,
   Text,
@@ -28,13 +27,8 @@ const IntroScreen = props => {
     >
       <SafeAreaView style={{ flex: 1 }}>
         <View style={{ flex: 1, justifyContent: "center" }}>
-          <Image
-            source={require("../assets/images/logo.png")}
-            style={{ justifyContent: "center", width: "90%", height: 50, alignSelf: "center" }}
-            resizeMode='contain'
-          />
           <Text style={{ textAlign: "center", fontFamily: "Montserrat-Bold", color: '#fff', fontSize: 16 }}>
-            Ажилтны апп
+            Мобайл аппликейшн хөгжүүлэлтийн ур чадвар шалгах даалгавар - Зангиа Портал ХХК / Тэмүүлэн .Б /
           </Text>
         </View>
         <TouchableOpacity style={{ backgroundColor: "#fff", borderRadius: 99, padding: 20, alignItems: "center", margin: 20 }} onPress={navigator}>

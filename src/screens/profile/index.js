@@ -1,89 +1,40 @@
-import React, {useEffect, useState} from 'react';
-import {View, ScrollView, Platform} from 'react-native';
-import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
-import { ALERT_TYPE, Dialog, Toast } from 'react-native-alert-notification';
-import styles from './profile.js';
+import React, {useContext, useEffect, useState} from 'react';
+import {View, TouchableOpacity, Text} from 'react-native';
 import Lottie from 'lottie-react-native';
-import InformationScreen from './information';
-import ProfileHeader from './props/profileHeader';
-import {GetServer} from './restService/server';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AuthContext} from '../../context/AuthContext';
+import LinearGradient from 'react-native-linear-gradient';
 import Header from '../../components/Header.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Index = props => {
   const {navigation} = props;
+  const {logout} = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState({});
-  const [isEnabled, setIsEnabled] = useState(false);
-
-  const toggleSwitch = async () => {
-    if (Platform.OS === 'android') {
-      try {
-        const result = await request(PERMISSIONS.ANDROID.NOTIFICATIONS);
-        if (result === RESULTS.GRANTED) {
-          setIsEnabled((previousState) => !previousState);
-        } else {
-          Dialog.show({
-            type: ALERT_TYPE.DANGER,
-            title: 'Алдааны мэдээлэл',
-            textBody: 'Та зөвхөн Settings-ээс идэвхжүүлэх боломжтой байна',
-            button: 'Хаах',
-            textBodyStyle: { fontFamily: "Montserrat-Bold" }
-          })
-        }
-      } catch (error) {
-        Toast.show({
-          type: ALERT_TYPE.WARNING,
-          title: 'Алдаа гарлаа !!!',
-          textBody: `${error}`,
-          textBodyStyle: { fontFamily: "Montserrat-Bold" }
-        })
-      }
-    } else if (Platform.OS === 'ios') {
-      try {
-        const result = await request(PERMISSIONS.IOS.NOTIFICATIONS);
-        if (result === RESULTS.GRANTED) {
-          setIsEnabled((previousState) => !previousState);
-        } else {
-          Dialog.show({
-            type: ALERT_TYPE.DANGER,
-            title: 'Алдааны мэдээлэл',
-            textBody: 'Та зөвхөн Settings-ээс идэвхжүүлэх боломжтой байна',
-            button: 'Хаах',
-            textBodyStyle: { fontFamily: "Montserrat-Bold" }
-          })
-        }
-      } catch (error) {
-        Toast.show({
-          type: ALERT_TYPE.WARNING,
-          title: 'Алдаа гарлаа !!!',
-          textBody: `${error}`,
-          textBodyStyle: { fontFamily: "Montserrat-Bold" }
-        })
-      }
-    }
-  };
-  
+  const [userData, setUserData] = useState({})
 
   useEffect(() => {
-    fetchUserData();
-  }, []);
+    getUserData()
+  }, [])
 
-  fetchUserData = () => {
-    AsyncStorage.getItem('userInfo').then(userInfo => {
-      let user = JSON.parse(userInfo);
-      setUser(user);
-
-      GetServer(user.jwt)
-        .then(response => {
-          console.log(response.data.message);
-        })
-        .catch(err => console.log(err, 'Error from Server!'));
-    });
-  };
+  const getUserData = async () => {
+    setIsLoading(true);
+    await AsyncStorage.getItem("userInfo").then((res) => {
+      if(res) {
+        const parsedData = JSON.parse(res);
+        setUserData(parsedData);
+      } else {
+        logout();
+      }
+    }).catch((e) => {
+      console.log(e, "user not found --->", e);
+      logout();
+    }).finally(() => {
+      setIsLoading(false);
+    })
+  }
 
   return (
-    <View style={styles.container}>
+    <View style={{flex: 1, backgroundColor: "#fff"}}>
       <Header name={"Хувийн мэдээлэл"} navigation={navigation}/>
       {isLoading ? (
         <Lottie
@@ -93,11 +44,31 @@ const Index = props => {
           source={require('../../assets/lottie/loading.json')}
         />
       ) : (
-        <ScrollView style={styles.profileContainer}>
-          <ProfileHeader user={user} />
-
-          <InformationScreen user={user} navigation={navigation} isEnabled={isEnabled} setIsEnabled={setIsEnabled} toggleSwitch={toggleSwitch}/>
-        </ScrollView>
+        <View style={{ flex: 1, justifyContent: "space-between", alignItems: "center" }}>
+          <View style={{ width: "100%", alignItems: "center" }}>
+            <Lottie
+              autoPlay
+              loop
+              style={{ width: 250, height: 200 }}
+              source={require('../../assets/lottie/user.json')}
+            />
+            <Text style={{ fontFamily: "Montserrat-Medium", color: '#000', textAlign: "center", width: "85%", fontSize: 16 }}>
+              {userData?.attributes?.username} таны одоогийн эрх {userData?.attributes?.is_admin ? "админ" : "хэрэглэгчийн"} эрхтэй байна шүү
+            </Text>
+          </View>
+          <View style={{ width: "90%", marginBottom: 10 }}>
+            <TouchableOpacity style={{ backgroundColor: "#fff", borderRadius: 99, alignItems: "center" }} onPress={logout}>
+              <LinearGradient
+                colors={[ '#92A3FD', '#9DCEFF' ]}
+                style={{ width: "100%", padding: 20, borderRadius: 99, alignItems: "center", flexDirection: "row", justifyContent: "center" }}
+              >   
+                <Text style={{ fontFamily: "Montserrat-Bold", color: '#fff', textTransform: "uppercase" }}>
+                  Системээс гарах
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </View>
       )}
     </View>
   );

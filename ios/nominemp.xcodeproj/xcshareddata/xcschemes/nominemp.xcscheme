@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "nominemp.app"
-               BlueprintName = "nominemp"
-               ReferencedContainer = "container:nominemp.xcodeproj">
+               BuildableName = "productZangia.app"
+               BlueprintName = "productZangia"
+               ReferencedContainer = "container:productZangia.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "nominempTests.xctest"
-               BlueprintName = "nominempTests"
-               ReferencedContainer = "container:nominemp.xcodeproj">
+               BuildableName = "productZangiaTests.xctest"
+               BlueprintName = "productZangiaTests"
+               ReferencedContainer = "container:productZangia.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "nominemp.app"
-            BlueprintName = "nominemp"
-            ReferencedContainer = "container:nominemp.xcodeproj">
+            BuildableName = "productZangia.app"
+            BlueprintName = "productZangia"
+            ReferencedContainer = "container:productZangia.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "nominemp.app"
-            BlueprintName = "nominemp"
-            ReferencedContainer = "container:nominemp.xcodeproj">
+            BuildableName = "productZangia.app"
+            BlueprintName = "productZangia"
+            ReferencedContainer = "container:productZangia.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

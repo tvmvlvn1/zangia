@@ -1,4 +1,4 @@
-package com.nominemp;
+package com.productZangia;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

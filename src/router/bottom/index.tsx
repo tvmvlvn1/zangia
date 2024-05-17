@@ -13,54 +13,11 @@ import Lottie from 'lottie-react-native'
 import {createStackNavigator} from '@react-navigation/stack';
 
 import HomeScreen from '../../screens/Home'
-import IdCardScreen from '../../screens/IdCard';
-import QrScreen from '../../screens/qr/TimeQr';
+import AddNewProduct from "../../screens/productDetail/add"
+import EditProduct from "../../screens/productDetail/edit"
+import ProductDetail from "../../screens/productDetail"
+import Favourite from '../../screens/favourite';
 import Profile from '../../screens/profile';
-
-import Rule from '../../screens/rule';
-import RuleView from '../../screens/rule/RuleView';
-import RuleFilter from '../../screens/rule/filter';
-
-//Abt router
-import Abt from '../../screens/abt';
-import AbtView from '../../screens/abt/AbtView';
-
-//Restock router
-import Restock from '../../screens/restock';
-import RestockList from '../../screens/restock/RestockList';
-import RestockView from '../../screens/restock/RestockView';
-
-// Profile router
-import Self from '../../screens/profile/edit/self';
-import EditEducation from '../../screens/profile/edit/education';
-
-import Signature from '../../screens/profile/signature';
-import RegisterSignature from '../../screens/profile/signature/registerSignature';
-
-import Family from '../../screens/profile/edit/family';
-
-import DependentMember from '../../screens/profile/edit/dependentMember';
-
-import AddressScreen from '../../screens/profile/edit/address';
-
-//Absence Request
-import Absence from '../../screens/absence/index';
-import AbsenceDetail from '../../screens/absence/detail';
-import CreateAbsenceRequest from '../../screens/absence/create';
-
-// Position router
-import Position from '../../screens/position';
-
-// Phone router
-import Phone from '../../screens/phone';
-import PhoneDetail from '../../screens/phone/detail';
-
-import TimeSheetScreen from '../../screens/Timesheet';
-import SalaryScreen from '../../screens/salary';
-import CompScreen from '../../screens/comp';
-import DetailCompScreen from '../../screens/comp/detail';
-import GeneralInfoStack from "../../screens/profile/general"
-import CalendarStack from "../../screens/calendar"
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createStackNavigator()
@@ -77,143 +34,18 @@ const HomeStackScreen = () => (
         name="HomeStack"
         component={HomeScreen}
       />
-
       <HomeStack.Screen
-        name="TimeSheetStack"
-        component={TimeSheetScreen}
-      />
-
-      <HomeStack.Screen
-        name="CalendarStack"
-        component={CalendarStack}
-      />
-
-      <HomeStack.Screen
-        name="SalaryStack"
-        component={SalaryScreen}
-      />
-
-      <HomeStack.Screen
-        name="JobPosition"
-        component={Position}
-      /> 
-
-      <HomeStack.Screen
-        name="CompScreen"
-        component={CompScreen}
-      />
-
-      <HomeStack.Screen
-        name="DetailCompScreen"
-        component={DetailCompScreen}
-      />
-      {/* Дүрэм журам */}
-      <HomeStack.Screen
-        name="RuleStack"
-        component={Rule}
+        name="AddNewProduct"
+        component={AddNewProduct}
       />
       <HomeStack.Screen
-        name="RuleViewStack"
-        component={RuleView}
+        name="EditProduct"
+        component={EditProduct}
       />
       <HomeStack.Screen
-        name="RuleFilterStack"
-        component={RuleFilter}
+        name="ProductDetail"
+        component={ProductDetail}
       />
-
-      {/* Ажлын байрны тодорхойлолт */}
-      <HomeStack.Screen
-        name="AbtStack"
-        component={Abt}
-      />
-      <HomeStack.Screen
-        name="AbtViewStack"
-        component={AbtView}
-      />
-
-      {/* Дэлгүүрийн өрөлт */}
-      <HomeStack.Screen
-        name="RestockStack"
-        component={Restock}
-      />
-      <HomeStack.Screen
-        name="RestockListStack"
-        component={RestockList}
-      />
-      <HomeStack.Screen
-        name="RestockViewStack"
-        component={RestockView}
-      />
-
-      {/* Ажилтны мэдээлэл */}
-      <HomeStack.Screen
-        name="GeneralInfoStack"
-        component={GeneralInfoStack}
-      />
-      <HomeStack.Screen
-        name="UserProfileStack"
-        component={Profile}
-      />
-      <HomeStack.Screen
-        name="EditInformationStack"
-        component={Self}
-      />
-      <HomeStack.Screen
-        name="EditEducationStack"
-        component={EditEducation}
-      />
-
-      <HomeStack.Screen
-        name="SignatureStack"
-        component={Signature}
-      />
-      <HomeStack.Screen
-        name="RegisterSignatureStack"
-        component={RegisterSignature}
-      />
-
-      <HomeStack.Screen
-        name="FamilyStack"
-        component={Family}
-      />
-
-      <HomeStack.Screen
-        name="RelationStack"
-        component={DependentMember}
-      />
-
-      <HomeStack.Screen
-        name="AddressStack"
-        component={AddressScreen}
-      />
-
-      {/* Чөлөөний хүсэлт */}
-      <HomeStack.Screen
-        name="AbsenceRequest"
-        component={Absence}
-      />
-      <HomeStack.Screen
-        name="AbsenceRequestDetail"
-        component={AbsenceDetail}
-      />
-      <HomeStack.Screen
-        name="CreateAbsence"
-        component={CreateAbsenceRequest}
-      />
-
-      <HomeStack.Screen
-        name="PhoneStack"
-        component={Phone}
-      />
-      <HomeStack.Screen
-        name="PhoneDetailStack"
-        component={PhoneDetail}
-      />
-    </HomeStack.Group>
-
-    <HomeStack.Group
-      screenOptions={{presentation: 'transparentModal', headerShown: false}}>
-      <HomeStack.Screen name="IdCardScreen" component={IdCardScreen} />
     </HomeStack.Group>
   </HomeStack.Navigator>
 );
@@ -233,22 +65,13 @@ const App = () => {
         component={HomeStackScreen}
       />
       <Tab.Screen
-        name="QR"
-        options={{
-          headerShown: false,
-          // @ts-ignore
-          tabBarIcon: ({ ref }) => <Lottie ref={ref} loop={false} source={require('./constants/qr.json')} style={{ width: 70, height: 70 }} />,
-        }}
-        component={QrScreen}
-      />
-      <Tab.Screen
         name="IdCard"
         options={{
           headerShown: false,
           // @ts-ignore
-          tabBarIcon: ({ ref }) => <Lottie ref={ref} loop={true} source={require('./constants/idCard.json')} style={{ width: 50, height: 50 }} />,
+          tabBarIcon: ({ ref }) => <Lottie ref={ref} loop={false} source={require('./constants/heart.json')} style={{ width: 50, height: 50 }} />,
         }}
-        component={IdCardScreen}
+        component={Favourite}
       />
       <Tab.Screen
         name="Profile"
